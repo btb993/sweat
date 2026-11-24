@@ -1460,6 +1460,12 @@ const FDB=[
 ['whey','Whey protein powder (typical)','Protein','1 scoop',30,400,80,8,6,0,5,3,300,500,500,1,80,3,0,0,0,0,0,1,0,.5],
 ['bar','Protein bar (typical)','Protein','1 bar',60,350,33,37,11,10,5,5,300,300,300,3,60,3,0,0,0,0,0,0,0,0],
 ['yog','Greek yogurt, plain, nonfat','Dairy','1 pot',170,59,10.2,3.6,.4,0,3.2,.1,36,141,110,.07,11,.52,1,0,0,.01,0,.75,7,.06],
+['yog2','Greek yogurt, plain, 2%','Dairy','1 pot',170,73,10,3.9,2,0,3.6,1.2,34,140,115,.05,11,.5,15,0,0,.03,.2,.7,7,.06],
+['yog5','Greek yogurt, plain, 5% (full fat)','Dairy','1 pot',170,95,9,3.5,5,0,3.5,3.3,35,140,110,.05,11,.5,40,0,.1,.1,.4,.7,7,.06],
+['yog10','Greek-style yogurt, 10%','Dairy','1 cup',150,122,3.8,4.2,10,0,4.2,6.5,45,150,120,.05,12,.5,80,.5,.1,.2,.8,.3,8,.05],
+['yogh','Greek yogurt with honey','Dairy','1 pot',150,128,7,15,4.5,0,14.5,3,35,140,100,.1,10,.5,35,0,.1,.1,.3,.5,6,.05],
+['yogf','Greek yogurt, fruit, 0%','Dairy','1 pot',150,80,8,11,.2,.5,10.5,.1,38,160,100,.1,11,.5,3,2,0,.05,.5,.6,7,.06],
+['skyr','Skyr, plain','Dairy','1 pot',150,63,11,4,.2,0,4,.1,40,150,120,.05,12,.5,2,0,0,0,0,.6,8,.05],
 ['milk','Milk, 2%','Dairy','1 glass',250,50,3.3,4.8,2,0,5.1,1.3,44,140,120,.02,11,.48,55,.2,1.1,.03,.2,.53,5,.04],
 ['ched','Cheddar cheese','Dairy','1 slice',28,403,24.9,1.3,33.1,0,.5,21.1,621,98,721,.68,28,3.1,265,0,.6,.29,2.8,.83,18,.07],
 ['cott','Cottage cheese, 2%','Dairy','1/2 cup',113,81,10.5,4.8,2.3,0,4,1.3,308,125,111,.16,9,.51,21,0,0,.02,0,.47,13,.08],
@@ -1513,6 +1519,14 @@ const FDB=[
 ['cola','Cola','Snacks & drinks','1 can',355,42,0,10.6,0,0,10.6,0,4,2,2,.02,0,0,0,0,0,0,0,0,0,0],
 ['beer','Beer','Snacks & drinks','1 pint',500,43,.5,3.6,0,0,0,0,4,27,4,.02,6,.01,0,0,0,0,0,.02,6,.05],
 ['wine','Red wine','Snacks & drinks','1 glass',150,85,.1,2.6,0,0,.6,0,4,127,8,.46,12,.14,0,0,0,0,0,0,1,.06]
+,['frchick','Fried chicken, breaded','Protein','1 piece',130,260,23,9,15,.4,.2,4,520,230,25,1.2,23,1.8,30,0,.2,1.2,15,.3,15,.35]
+,['cevapi','Ćevapi, grilled','Protein','5 pieces',150,260,18,2,20,0,.5,8,700,280,20,2.2,20,4,0,0,.1,.3,1.5,2,8,.3]
+,['frcheese','Fried cheese, breaded','Dairy','1 portion',150,330,16,14,23,.6,1,11,650,90,450,.9,25,2.2,180,0,.4,.8,3,.9,20,.08]
+,['tartar','Tartar sauce','Fats','2 tbsp',30,300,.8,12,28,.3,8,4.2,670,40,12,.3,3,.1,20,.5,.2,3.5,60,.1,5,.02]
+,['strapp','Apple strudel','Desserts','1 slice',120,274,3.3,41,11.2,2.2,20,2.1,268,150,15,1.1,9,.2,15,1.7,0,.7,6,0,25,.04]
+,['strch','Cheese strudel (sweet)','Desserts','1 slice',120,300,7.5,36,14,.8,16,6,240,110,70,.9,12,.6,90,0,.2,.6,4,.3,20,.05]
+,['strpop','Poppy seed strudel','Desserts','1 slice',100,365,7,50,15,4,24,5,170,200,250,2.2,70,1.6,40,.5,.1,1,4,.1,30,.1]
+,['strch2','Sour cherry strudel','Desserts','1 slice',120,255,3.4,38,10,1.5,19,2,250,140,14,1,9,.2,40,2,0,.6,5,0,20,.04]
 ].map(r=>{const o={id:r[0],name:r[1],cat:r[2],pn:r[3],pg:r[4]};NK.forEach((k,i)=>o[k]=r[5+i]);return o});
 const NUT={kcal:['Calories','kcal'],p:['Protein','g'],c:['Carbs','g'],f:['Fat','g'],fib:['Fibre','g'],sug:['Sugar','g'],sat:['Saturated fat','g'],na:['Sodium','mg'],k:['Potassium','mg'],ca:['Calcium','mg'],fe:['Iron','mg'],mg:['Magnesium','mg'],zn:['Zinc','mg'],va:['Vitamin A','µg'],vc:['Vitamin C','mg'],vd:['Vitamin D','µg'],ve:['Vitamin E','mg'],vk:['Vitamin K','µg'],b12:['Vitamin B12','µg'],fol:['Folate','µg'],b6:['Vitamin B6','mg']};
 const LIMITS=['sug','sat','na'];
@@ -1554,7 +1568,7 @@ $('#fWater').addEventListener('click',e=>{const b=e.target.closest('[data-w]');i
 function addFood(meal){const F=FS();let cat='All';
  const b=openSheet(`<div class="shd"><h3>Add to ${esc(meal)}</h3>${closeBtn}</div>
   <input type="search" id="fq" placeholder="Search foods, e.g. chicken, oats, banana" aria-label="Search foods" style="width:100%">
-  <div class="row" id="fcat" style="margin:10px 0">${['All','Recent','Protein','Dairy','Grains','Fruit & veg','Legumes & nuts','Fats','Snacks & drinks','My foods'].map(c=>`<button class="chip" data-c="${c}" aria-pressed="${c==='All'}">${c}</button>`).join('')}</div>
+  <div class="row" id="fcat" style="margin:10px 0">${['All','Recent','Protein','Dairy','Grains','Fruit & veg','Legumes & nuts','Fats','Snacks & drinks','Desserts','My foods'].map(c=>`<button class="chip" data-c="${c}" aria-pressed="${c==='All'}">${c}</button>`).join('')}</div>
   <div class="pick" id="fres" style="max-height:46vh"></div>
   <div class="row" style="margin-top:12px"><button class="btn" id="fOn">Search online database</button><button class="btn" id="fBar">Barcode</button><button class="btn" id="fNew">Create a food</button></div><div class="meta" id="fMsg" style="margin-top:6px"></div>`,'Add food');
  const draw=(extra)=>{const q=$('#fq',b).value.trim().toLowerCase();let list=cat==='Recent'?F.recent.map(foodById).filter(Boolean):cat==='My foods'?F.custom:allFoods().filter(f=>cat==='All'||f.cat===cat);
