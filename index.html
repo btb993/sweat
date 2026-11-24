@@ -305,6 +305,8 @@ video{width:100%;border-radius:14px;background:#000;max-height:360px}
 .glasses svg{width:100%;height:100%;fill:#232327;stroke:#3b3b41;stroke-width:1.2}
 .glasses .on svg{fill:#4cc9ff;stroke:#4cc9ff}
 .nlist{display:grid;gap:8px}
+.nr,.fmb{font:inherit;color:inherit;background:none;border:0;padding:4px 6px;margin:-4px -6px;border-radius:10px;text-align:left;cursor:pointer;width:calc(100% + 12px)}.nr:hover,.fmb:hover{background:rgba(255,255,255,.05)}.fsum .fmb{width:auto;margin:0;padding:0;display:block}.fsum .fmb span{display:block}
+.nbk{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}.nbk li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px}.nbk small{color:var(--mut);font-size:12px}.nbk .bar{grid-column:1/3;height:8px;border-radius:5px;background:#2b2b30;overflow:hidden}.nbk .bar i{display:block;height:100%;background:var(--lime);border-radius:5px}
 .nr{display:grid;grid-template-columns:7.5em minmax(0,1fr) 3.2em;gap:4px 10px;align-items:center;font-size:14px}
 .nr .nb{margin:0}
 .nr b{text-align:right;font-size:14px}
@@ -1543,19 +1545,31 @@ function totals(k){const t={},miss=new Set();NK.forEach(n=>t[n]=0);(FS().days[k]
 const MEALS=['Breakfast','Lunch','Dinner','Snacks'];
 const r0=v=>v>=100?Math.round(v):v>=10?Math.round(v):Math.round(v*10)/10;
 function pctBar(v,t,limit){const pc=t?v/t*100:0,col=limit==='prog'?(pc>115?'var(--red)':'var(--lime)'):limit?(pc>100?'var(--red)':'var(--lime)'):(pc>=99.5?'var(--lime)':pc>=50?'var(--yel)':'var(--red)');return`<span class="nb"><i style="width:${Math.min(100,pc).toFixed(0)}%;background:${col}"></i></span>`}
+
+function nutBreak(k){const T=ftargets(),d=fday(fDay),[nm,u]=k==='kcal'?['Calories','kcal']:NUT[k],agg={};
+ d.entries.forEach(e=>{const f=foodById(e.f);if(!f||f[k]==null)return;const v=f[k]*e.g/100,a=agg[f.id]||(agg[f.id]={f,v:0,g:0,meals:new Set()});a.v+=v;a.g+=e.g;a.meals.add(e.meal)});
+ const L=Object.values(agg).filter(a=>a.v>0).sort((a,b)=>b.v-a.v),tot=L.reduce((s,a)=>s+a.v,0),tg=T[k],lim=['sug','sat','na'].includes(k);
+ const day=fDay===TODAY()?'today':new Date(fDay).toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'});
+ const best=k==='kcal'?[]:FDB.filter(f=>f[k]>0).map(f=>[f,f[k]*f.pg/100]).sort((a,b)=>b[1]-a[1]).slice(0,4);
+ openSheet(`<div class="shd"><h3>${nm}: where it came from</h3>${closeBtn}</div>
+  <p style="margin:0 0 4px"><b style="font-size:22px">${r0(tot)} ${u}</b>${tg?` <span class="meta">of ${tg} ${u} ${lim?'limit':'target'} · ${Math.round(tot/tg*100)}%</span>`:''}</p><p class="meta" style="margin:0 0 14px">${esc(day)}</p>
+  ${L.length?`<ul class="nbk">${L.map(a=>{const pc=tot?a.v/tot*100:0;return`<li><span><b>${esc(a.f.name)}</b><br><small>${r0(a.g)} g · ${[...a.meals].join(', ')}</small></span><span style="text-align:right"><b>${Math.round(pc)}%</b><br><small>${r0(a.v)} ${u}${tg?' · '+Math.round(a.v/tg*100)+'% of '+(lim?'limit':'target'):''}</small></span><span class="bar"><i style="width:${pc.toFixed(1)}%"></i></span></li>`}).join('')}</ul>`
+  :`<p class="meta">Nothing you logged ${fDay===TODAY()?'today':'that day'} has ${esc(nm.toLowerCase())}.</p>`}
+  ${!lim&&best.length&&tg&&tot<tg?`<h4 style="margin:20px 0 6px">Easy ways to get more</h4><p class="meta" style="margin:0">${best.map(([f,v])=>esc(f.name)+' ('+r0(v)+' '+u+' per '+esc(f.pn)+')').join(' · ')}</p>`:''}`,nm)}
 function renderFood(){const T=ftargets(),t=totals(fDay),d=fday(fDay),eaten=Math.round(t.kcal),left=T.kcal-eaten,C=2*Math.PI*54,pc=Math.min(1,eaten/T.kcal),isT=fDay===TODAY();
  const burned=Math.round(S.acts.filter(a=>dkey(a.start)===fDay).reduce((s,a)=>s+(a.cal||0),0));
  $('#fDate').textContent=isT?'Today':new Date(fDay).toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'});$('#fNext').disabled=isT;
  $('#fTop').innerHTML=`<div class="fring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="none" stroke="#2b2b30" stroke-width="11"/><circle cx="60" cy="60" r="54" fill="none" stroke="${left<0?'var(--red)':'var(--lime)'}" stroke-width="11" stroke-linecap="round" stroke-dasharray="${f1(C*pc)} ${f1(C)}"/></svg><div class="v"><div><b>${Math.abs(left)}</b><small>${left<0?'kcal over':'kcal left'}</small></div></div></div>
-  <div class="fsum"><div><span>Eaten</span><b>${eaten}</b></div><div><span>Target</span><b>${T.kcal}</b></div>${burned?`<div><span>Burned (watch)</span><b>${burned}</b></div>`:''}</div>
-  <div class="fmac">${[['p','Protein'],['c','Carbs'],['f','Fat'],['fib','Fibre']].map(([k,n])=>`<div><div class="row" style="justify-content:space-between"><span>${n}</span><b>${r0(t[k])} / ${T[k]} g</b></div>${pctBar(t[k],T[k],'prog')}</div>`).join('')}</div>`;
+  <div class="fsum"><button class="fmb" data-nut="kcal"><span>Eaten</span><b>${eaten}</b></button><div><span>Target</span><b>${T.kcal}</b></div>${burned?`<div><span>Burned (watch)</span><b>${burned}</b></div>`:''}</div>
+  <div class="fmac">${[['p','Protein'],['c','Carbs'],['f','Fat'],['fib','Fibre']].map(([k,n])=>`<button class="fmb" data-nut="${k}"><div class="row" style="justify-content:space-between"><span>${n}</span><b>${r0(t[k])} / ${T[k]} g</b></div>${pctBar(t[k],T[k],'prog')}</button>`).join('')}</div>`;
  $('#fMeals').innerHTML=MEALS.map(m=>{const es=d.entries.filter(e=>e.meal===m),kc=Math.round(es.reduce((s,e)=>{const f=foodById(e.f);return s+(f?f.kcal*e.g/100:0)},0));
   return`<div class="meal"><div class="mh"><h3>${m}</h3><span>${kc} kcal</span><button class="btn sm pri" data-addm="${m}">+ Add</button></div>${es.length?`<ul>${es.map(e=>{const f=foodById(e.f);if(!f)return'';const n=e.g/f.pg;return`<li><button class="fe" data-e="${e.id}"><span><b>${esc(f.name)}</b><small>${Math.abs(n-Math.round(n))<.01&&n>=1&&!/^[\d.]+\s*g$/.test(f.pn)?Math.round(n)+' × '+esc(f.pn)+' · ':''}${r0(e.g)} g</small></span><span>${Math.round(f.kcal*e.g/100)} kcal</span></button></li>`}).join('')}</ul>`:'<p class="meta" style="margin:4px 0 0">Nothing logged yet.</p>'}</div>`}).join('');
  const wl=d.water/1000,wt=T.water,gl=Math.ceil(wt/.25);
  $('#fWater').innerHTML=`<div class="row" style="justify-content:space-between"><h3>Water</h3><b>${wl.toFixed(2)} / ${wt} L</b></div><div class="glasses">${[...Array(gl)].map((_,i)=>`<button data-w="${i}" aria-label="Glass ${i+1}" class="${i<Math.round(d.water/250)?'on':''}"><svg viewBox="0 0 24 24"><path d="M6 3h12l-1.6 17.2a2 2 0 0 1-2 1.8H9.6a2 2 0 0 1-2-1.8z"/></svg></button>`).join('')}</div><p class="meta" style="margin:8px 0 0">Each glass is 250 ml. Tap the last full glass to undo.</p>`;
  const micro=['k','ca','fe','mg','zn','va','vc','vd','ve','vk','b12','fol','b6'],lims=['sug','sat','na'];
- $('#fMicro').innerHTML=`<div class="nlist">${micro.map(k=>`<div class="nr"><span>${NUT[k][0]}</span>${pctBar(t[k],T[k])}<b>${Math.round(t[k]/T[k]*100)}%</b><small>${r0(t[k])} / ${T[k]} ${NUT[k][1]}</small></div>`).join('')}</div>
-  <h4 style="margin:16px 0 6px">Keep under</h4><div class="nlist">${lims.map(k=>`<div class="nr"><span>${NUT[k][0]}</span>${pctBar(t[k],T[k],1)}<b>${Math.round(t[k]/T[k]*100)}%</b><small>${r0(t[k])} / ${T[k]} ${NUT[k][1]}</small></div>`).join('')}</div>
+ setTimeout(()=>document.querySelectorAll('#v-food [data-nut]').forEach(b=>b.onclick=()=>nutBreak(b.dataset.nut)));
+ $('#fMicro').innerHTML=`<div class="nlist">${micro.map(k=>`<button class="nr" data-nut="${k}"><span>${NUT[k][0]}</span>${pctBar(t[k],T[k])}<b>${Math.round(t[k]/T[k]*100)}%</b><small>${r0(t[k])} / ${T[k]} ${NUT[k][1]}</small></button>`).join('')}</div>
+  <h4 style="margin:16px 0 6px">Keep under</h4><div class="nlist">${lims.map(k=>`<button class="nr" data-nut="${k}"><span>${NUT[k][0]}</span>${pctBar(t[k],T[k],1)}<b>${Math.round(t[k]/T[k]*100)}%</b><small>${r0(t[k])} / ${T[k]} ${NUT[k][1]}</small></button>`).join('')}</div>
   ${t.miss.size&&d.entries.length?`<p class="meta">Some foods you logged have no data for ${[...t.miss].filter(k=>NUT[k]).slice(0,5).map(k=>NUT[k][0].toLowerCase()).join(', ')}${t.miss.size>5?' and more':''}, so those totals may read low.</p>`:''}
   <p class="meta">Targets are adult reference intakes (US NIH RDA/AI) for ${S.profile&&S.profile.sex?S.profile.sex+'s':'adults'}. Values are approximate and not medical advice.</p>`;
  const low=micro.filter(k=>t[k]<T[k]*.5).sort((a,b)=>t[a]/T[a]-t[b]/T[b]).slice(0,3);
