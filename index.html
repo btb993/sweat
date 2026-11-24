@@ -463,7 +463,7 @@ video{width:100%;border-radius:14px;background:#000;max-height:360px}
       </div>
       <div class="tsess" id="tsess"></div>
     </div></div>
-    <div class="sec" id="tCheck"></div><div class="sec" id="tFood"></div>
+    <div class="sec" id="tTrain"></div><div class="sec" id="tCheck"></div><div class="sec" id="tFood"></div>
     <div class="sec"><h3>Coach notes</h3><div class="ins" id="tIns"></div></div>
     <div class="sec two">
       <div><h3 style="margin-bottom:12px">This week</h3><div class="wkrow" id="tWeek"></div><div class="stats" style="margin-top:18px" id="tStats"></div></div>
@@ -1018,7 +1018,7 @@ function bodyMap(host,small){const f=fatigue(),col=m=>{const v=f[m];return v>=85
 /* ================= Today ================= */
 function ring(sc){const c=2*Math.PI*54,v=sc==null?0:sc/100;return`<div class="ring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="none" stroke="#2b2b30" stroke-width="11"/><circle cx="60" cy="60" r="54" fill="none" stroke="${sc==null?'transparent':sc>=50?'#d6fb41':sc>=30?'#ffc23d':'#ff4d3d'}" stroke-width="11" stroke-linecap="round" stroke-dasharray="${f1(c*v)} ${f1(c)}"/></svg><div class="v"><div><b>${sc==null?'–':sc}</b><small>readiness</small></div></div></div>`}
 let lightToday=null;
-function renderToday(){const now=new Date(),h=now.getHours(),t=TODAY(),sc=scoreFor(t),a=advice(sc);
+function renderToday(){setTimeout(()=>{const T=$('#tTrain');if(T){dayBlock(T,dayStats());const h=$('h3',T);if(h)h.textContent='Today\'s training'}});const now=new Date(),h=now.getHours(),t=TODAY(),sc=scoreFor(t),a=advice(sc);
  $('#hello').textContent=(h<12?'Good morning':h<18?'Good afternoon':'Good evening')+(S.profile&&S.profile.name?', '+S.profile.name:'')+' · '+now.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'});
  $('#ready').innerHTML=ring(sc)+`<div><h3>${esc(a[0])}</h3><p>${esc(a[1])}</p>${sc==null?'<button class="btn wht sm" id="rCk" style="margin-top:10px">Check in now</button>':''}</div>`;
  const rc=$('#rCk');if(rc)rc.onclick=()=>checkin();
@@ -1821,22 +1821,25 @@ function weekAvg(){const ds=[...Array(7)].map((_,i)=>{const x=new Date();x.setDa
 function suggestMeals(t,T,wk,left){const lowW=new Set(wk.n>=2?MKEY.filter(k=>k!=='p'&&wk[k]<T[k]*.7):[]);
  return MSUG.map(m=>{const n=mealNut(m);let sc=0;const gain=[];MKEY.forEach(k=>{const need=Math.max(0,T[k]-t[k]);if(!need)return;const g=Math.min(n[k],need)/T[k];const w=k==='p'?3:k==='fib'?1.2:lowW.has(k)?1.6:.8;sc+=g*w;if(k!=='p'&&g>.12)gain.push([k,g])});
   if(n.kcal>left+150)sc*=.35;if(t.na+n.na>T.na)sc*=.85;gain.sort((a,b)=>b[1]-a[1]);return{m,n,sc,gain}}).sort((a,b)=>b.sc-a.sc).slice(0,3)}
-function renderWork(){renderPick();const D=$('#wDay'),Co=$('#wCoach');if(!D)return;const td=TODAY(),hs=S.history.filter(h=>dkey(h.start)===td),as=S.acts.filter(a=>dkey(a.start)===td);
+function dayStats(){const td=TODAY(),hs=S.history.filter(h=>dkey(h.start)===td),as=S.acts.filter(a=>dkey(a.start)===td);
  const T=ftargets(),t=totals(td),fd=fday(td),now=new Date(),hr=now.getHours()+now.getMinutes()/60;
  const wMin=hs.reduce((s,h)=>s+(h.report&&h.report.active?h.report.active:h.dur||0),0)/60,aMin=as.reduce((s,a)=>s+(a.dur||0),0)/60,
   wK=hs.reduce((s,h)=>s+(h.report&&h.report.kcal||0),0),aK=as.reduce((s,a)=>s+(a.cal||0),0),burn=Math.round(wK+aK),tgt=Math.round(T.kcal+aK*.6),left=tgt-Math.round(t.kcal);
  const mus={},mp=[];hs.forEach(h=>{Object.entries(h.mus||{}).forEach(([m,v])=>{if(m!=='_p')mus[m]=(mus[m]||0)+v});(h.musP||[]).forEach(m=>mp.push(m))});
  as.filter(a=>/bike|cycling|running|walking|hiking/i.test(a.sport)).forEach(()=>{['quads','glutes','hams','calves'].forEach(m=>{mus[m]=(mus[m]||0)+1})});
  const kmT=as.reduce((s,a)=>s+(a.dist||0),0);
+ return{td,hs,as,T,t,fd,now,hr,wMin,aMin,wK,aK,burn,tgt,left,mus,mp,kmT}}
+function dayBlock(D,x){if(!D)return;const{hs,as,T,t,now,wMin,aMin,burn,tgt,mus,mp,kmT}=x,TM=d=>new Date(d).toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'});
  D.innerHTML=`<div class="vhead" style="margin-bottom:0"><div><h3>Today in total</h3><p>${now.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'})}</p></div></div>
-  <div class="dstat"><div><b>${Math.round(wMin+aMin)} min</b><small>active</small></div><div><b>${burn}</b><small>kcal burned</small></div><div><b>${Math.round(t.kcal)}</b><small>kcal eaten of ${tgt}</small></div><div><b>${Math.round(t.p)} g</b><small>protein of ${T.p} g</small></div>${kmT?`<div><b>${r0(kmT)} km</b><small>distance</small></div>`:''}</div>
-  <div class="wtwo"><div>${hs.length||as.length?`<ul class="dlist">${hs.map(h=>`<li><span><b>${esc(h.name)}</b><small>${new Date(h.start).toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'})} · ${Math.round(h.dur/60)} min · ${h.report?h.report.kcal+' kcal · efficiency '+h.report.score:h.sets+' sets'}</small></span><button class="btn sm" data-hs="${h.id}">Report</button></li>`).join('')}${as.map(a=>`<li>${a.photo?`<img src="${a.photo}" alt="">`:''}<span><b>${esc(a.sport)}${a.name?' · '+esc(a.name):''}</b><small>${new Date(a.start).toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'})} · ${Math.round(a.dur/60)} min${a.dist?' · '+r0(a.dist)+' km':''}${a.cal?' · '+Math.round(a.cal)+' kcal'+(a.calEst?' (est.)':''):''}${a.rpm?' · '+a.rpm+' rpm':''}${a.avg?' · '+a.avg+' bpm':''}${a.lvl?' · level '+a.lvl:''}</small></span><button class="btn sm" data-ae="${a.id}">Edit</button></li>`).join('')}</ul>`
+  <div class="dstat"><div><b>${hs.length+as.length}</b><small>workouts & activities</small></div><div><b>${Math.round(wMin+aMin)} min</b><small>active</small></div><div><b>${burn}</b><small>kcal burned</small></div><div><b>${Math.round(t.kcal)}</b><small>kcal eaten of ${tgt}</small></div><div><b>${Math.round(t.p)} g</b><small>protein of ${T.p} g</small></div>${kmT?`<div><b>${r0(kmT)} km</b><small>distance</small></div>`:''}</div>
+  <div class="wtwo"><div>${hs.length||as.length?`<ul class="dlist">${hs.map(h=>{const r=h.report||{},bk=h.bike||{};return`<li>${bk.photo?`<img src="${bk.photo}" alt="">`:''}<span><b>${esc(h.name)}</b><small>${[TM(h.start),Math.round(h.dur/60)+' min'+(r.active?' ('+Math.round(r.active/60)+' active, '+Math.round((r.rest||0)/60)+' rest)':''),r.kcal?r.kcal+' kcal':'',h.sets+' sets',h.reps?h.reps+' reps':'',h.vol?Math.round(h.vol)+' '+S.units+' lifted':'',r.score!=null?'efficiency '+r.score+'%':'',h.rpe?'effort '+h.rpe+'/10':'',bk.km?'bike '+r0(bk.km)+' km':'',bk.rpm?bk.rpm+' rpm':''].filter(Boolean).join(' · ')}</small></span><button class="btn sm" data-hs="${h.id}">Report</button></li>`}).join('')}${as.map(a=>`<li>${a.photo?`<img src="${a.photo}" alt="">`:''}<span><b>${esc(a.sport)}${a.name?' · '+esc(a.name):''}</b><small>${[TM(a.start),Math.round(a.dur/60)+' min',a.dist?r0(a.dist)+' km':'',a.dist&&a.dur?r0(a.dist/(a.dur/3600))+' km/h':'',a.cal?Math.round(a.cal)+' kcal'+(a.calEst?' (est.)':''):'',a.rpm?a.rpm+' rpm':'',a.avg?a.avg+' bpm avg':'',a.max?a.max+' max':'',a.lvl?'level '+a.lvl:'',a.src&&a.src!=='Manual'?'from '+a.src:''].filter(Boolean).join(' · ')}</small></span><button class="btn sm" data-ae="${a.id}">Edit</button></li>`).join('')}</ul>`
   :'<div class="empty">Nothing logged yet today. Pick a workout above, or log a ride or walk with <b>Log activity</b>.</div>'}
-  <div class="row" style="margin-top:12px"><button class="btn sm" id="wLog2">+ Log activity</button><button class="btn sm" id="wBike">+ Indoor bike ride</button><a class="btn sm" href="#food">Food log</a></div></div>
+  <div class="row" style="margin-top:12px"><button class="btn sm" data-wl2>+ Log activity</button><button class="btn sm" data-wbk>+ Indoor bike ride</button><a class="btn sm" href="#food">Food log</a></div></div>
   <div>${Object.keys(mus).length?`<div class="meta" style="margin-bottom:6px">Muscles worked today</div>${scoreMap(withP(mus,mp),230)}`:''}</div></div>`;
- $('#wLog2',D).onclick=()=>logActivity();$('#wBike',D).onclick=()=>logActivity({sport:'Indoor bike'});
+ $('[data-wl2]',D).onclick=()=>logActivity();$('[data-wbk]',D).onclick=()=>logActivity({sport:'Indoor bike'});
  $$('[data-hs]',D).forEach(b=>b.onclick=()=>{const h=S.history.find(x=>x.id===b.dataset.hs);if(h)showSession(h)});
- $$('[data-ae]',D).forEach(b=>b.onclick=()=>{const a=S.acts.find(x=>x.id===b.dataset.ae);if(a)logActivity(a)});
+ $$('[data-ae]',D).forEach(b=>b.onclick=()=>{const a=S.acts.find(x=>x.id===b.dataset.ae);if(a)logActivity(a)});}
+function renderWork(){renderPick();const D=$('#wDay'),Co=$('#wCoach');if(!D)return;const x=dayStats(),{td,hs,as,T,t,fd,now,hr,wMin,aMin,wK,aK,burn,tgt,left,mus,mp,kmT}=x;dayBlock(D,x);
  // coach feedback
  const C=[],trained=hs.length||as.length,exp=clamp((hr-7)/13,.15,1),wk=weekAvg(),lastEnd=Math.max(0,...hs.map(h=>+new Date(h.start)+h.dur*1000),...as.map(a=>+new Date(a.start)+a.dur*1000)),since=(Date.now()-lastEnd)/36e5,cardioMin=as.filter(a=>a.sport!=='Yoga / stretching').reduce((s,a)=>s+a.dur/60,0)+hs.reduce((s,h)=>s+(h.log||[]).filter(l=>exById(l.ex).g==='Cardio').reduce((x,l)=>x+l.t,0)/60,0);
  const pd=S.plan&&S.plan.days.find(d=>d.dow===DOW(now));
@@ -1868,7 +1871,7 @@ requestAnimationFrame(loop);
 const VIEWS=['today','workout','plan','library','food','body','progress'];
 function route(){const v=VIEWS.includes(location.hash.slice(1))?location.hash.slice(1):'today';
  VIEWS.forEach(x=>$('#v-'+x).classList.toggle('on',x===v));$$('#tabs a,#bnav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+v));
- if(v==='body')renderBody();if(v==='food')renderFood();if(v==='workout')renderWork()}
+ if(v==='body')renderBody();if(v==='food')renderFood();if(v==='workout')renderWork();if(v==='today')renderToday()}
 window.addEventListener('hashchange',()=>{route();window.scrollTo(0,0)});
 function renderAll(){$('#meBtn').textContent=(S.profile&&S.profile.name?S.profile.name[0]:'S').toUpperCase();renderToday();renderPlan();renderLibrary();renderProgress();renderFood();renderTemplates();renderWork();if(location.hash==='#body')renderBody()}
 renderAll();route();
