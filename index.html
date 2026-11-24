@@ -313,7 +313,7 @@ video{width:100%;border-radius:14px;background:#000;max-height:360px}
 .wtwo{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}@media(min-width:860px){.wtwo{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}}
 .coach{display:flex;flex-direction:column;gap:10px}.coach .ci{background:var(--card);border-radius:14px;padding:12px 14px;border-left:4px solid var(--lime)}.coach .ci.y{border-color:var(--yel)}.coach .ci.r{border-color:var(--red)}.coach .ci b{display:block;margin-bottom:2px}
 .msug{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr))}.msug .card{gap:6px}.msug .tags{display:flex;flex-wrap:wrap;gap:6px}.msug .tags span{font-size:12px;background:rgba(214,251,65,.12);color:var(--lime);border-radius:999px;padding:3px 9px}
-.atype{display:flex;flex-wrap:wrap;gap:8px}.rvs{display:flex;align-items:center;gap:14px;background:var(--card);border-radius:16px;padding:12px 16px}.rvs b{font:800 40px 'Barlow Condensed',sans-serif;color:var(--lime)}.rvl{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;line-height:1.45}.rvl li::marker{color:#ffc23d}.rvl.ok li::marker{color:var(--lime)}.cotwo{display:grid;grid-template-columns:1fr 1fr;gap:8px}.costage{height:220px;border-radius:18px;overflow:hidden;position:relative;margin-bottom:10px}.coprs{display:flex;flex-wrap:wrap;gap:8px}.coprs .chip b{color:var(--lime);margin-right:2px}#laW{width:100%;min-width:0}#v-workout{padding-bottom:110px}
+.atype{display:flex;flex-wrap:wrap;gap:8px}.recl{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}.rec{flex-direction:row!important;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px!important}.rec .row{flex-wrap:nowrap}.reI{display:flex;flex-direction:column;gap:6px;margin:12px 0}.rei{display:flex;align-items:center;gap:6px;background:var(--card);border-radius:12px;padding:6px 8px}.rei>span:first-child{flex:1;min-width:0;font-weight:600;font-size:14px}.rei small{display:block;color:var(--mut);font-weight:400;font-size:12px}.rei input{width:74px;min-height:36px;text-align:right;padding:0 8px;font-size:15px}.ib.sm{width:34px;height:34px;min-width:34px}.reT{background:rgba(214,251,65,.1);border-radius:12px;padding:10px 12px;margin-top:10px;font-size:14px}.rvs{display:flex;align-items:center;gap:14px;background:var(--card);border-radius:16px;padding:12px 16px}.rvs b{font:800 40px 'Barlow Condensed',sans-serif;color:var(--lime)}.rvl{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;line-height:1.45}.rvl li::marker{color:#ffc23d}.rvl.ok li::marker{color:var(--lime)}.cotwo{display:grid;grid-template-columns:1fr 1fr;gap:8px}.costage{height:220px;border-radius:18px;overflow:hidden;position:relative;margin-bottom:10px}.coprs{display:flex;flex-wrap:wrap;gap:8px}.coprs .chip b{color:var(--lime);margin-right:2px}#laW{width:100%;min-width:0}#v-workout{padding-bottom:110px}
 @media(max-width:720px){.hero{padding:12px 16px 16px}.hero>div{gap:12px}.hello{font-size:14px}.hero h2{font-size:30px;margin:0}
  .ready{gap:14px;margin-top:8px}.ready .ring{width:84px!important;height:84px!important;flex:none}.ready .ring svg{width:84px;height:84px}.ready .ring b,.ready .ring .v b{font-size:30px!important}.ready .ring small{font-size:10px!important}.ready h3{font-size:19px!important}.ready p{font-size:14px;line-height:1.35}
  .tsess{grid-template-columns:104px minmax(0,1fr)!important;border-radius:18px}.tsess .stage{min-height:0!important;height:100%}.tsess .tmap{display:none}.tsess .bd{padding:12px 14px;gap:4px}.tsess .bd h3{font-size:20px!important}.tsess .bd>p{font-size:14px;line-height:1.35}.tsess .exl{display:none}.tsess .btn{min-height:38px;padding:0 14px;font-size:14px}}
@@ -516,7 +516,7 @@ button.pvmap{border:0;cursor:pointer;color:inherit;font:inherit}.pvmap.min{width
     <div class="vhead"><div><h2>Food</h2><p>Log what you eat. SWEAT counts calories, protein, carbs and fat plus 13 vitamins and minerals, and compares them with your daily needs.</p></div>
       <div class="row"><button class="ib" id="fPrev" aria-label="Previous day">‹</button><b id="fDate" style="min-width:9em;text-align:center"></b><button class="ib" id="fNext" aria-label="Next day">›</button></div></div>
     <div class="ftop card" id="fTop"></div>
-    <div class="two sec" style="margin-top:18px"><div id="fMeals"></div><div><div class="card" id="fWater"></div><div class="ins" id="fTips" style="margin-top:14px;grid-template-columns:1fr"></div></div></div>
+    <div class="sec" id="fRec"></div><div class="two sec" style="margin-top:18px"><div id="fMeals"></div><div><div class="card" id="fWater"></div><div class="ins" id="fTips" style="margin-top:14px;grid-template-columns:1fr"></div></div></div>
     <div class="two sec"><div class="chc"><h4>Vitamins and minerals <span>% of daily need</span></h4><div id="fMicro"></div></div>
       <div class="chc"><h4>Calories, last 7 days <span>lime = on target, red = over</span></h4><div class="vbars" id="fWeek"></div></div></div>
   </section>
@@ -802,10 +802,21 @@ function scene(kind,amb){const id='s'+(++SCID),A=c=>amb?c:'';
  <path d="M184,106 Q214,86 244,100 T296,92 V132 H184Z" fill="#9fc095"/><path d="M184,118 Q230,104 262,114 T296,110 V132 H184Z" fill="#7fa476"/>
  <rect x="238" y="-10" width="4" height="142" fill="#fbf8f2"/><rect x="184" y="58" width="112" height="4" fill="#fbf8f2"/><rect x="174" y="134" width="132" height="6" rx="2" fill="#efe5d7"/>
  <polygon class="${A('beam')}" points="184,-10 296,-10 236,181 40,181" fill="url(#${id}b)" opacity=".5"/>
- <rect x="30" y="4" width="52" height="66" rx="2" fill="#fbf8f2" stroke="#d8cbb9"/><circle cx="56" cy="34" r="15" fill="#e8b49b"/><path d="M38,58 Q56,44 74,58" fill="none" stroke="#9fb59a" stroke-width="3"/>
+ <rect x="-120" y="143" width="480" height="30" fill="#e9dfcf" opacity=".55"/><rect x="-120" y="142" width="480" height="2" fill="#d9ccb8"/>${[-100,-70,-40,-10,20,50,80,110,140,170].map(x=>`<rect x="${x}" y="146" width="26" height="24" rx="1.5" fill="none" stroke="#d6c7b0" stroke-width=".8"/>`).join('')}
+ <radialGradient id="${id}g" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff3d6" stop-opacity=".9"/><stop offset="1" stop-color="#fff3d6" stop-opacity="0"/></radialGradient><circle cx="112" cy="20" r="44" fill="url(#${id}g)" opacity=".55"/>
+ <path d="M112,-50 V2" stroke="#3b3631" stroke-width=".9"/><path d="M103,2 h18 l-3,9 h-12z" fill="#2c2a27"/><ellipse cx="112" cy="12" rx="6" ry="1.6" fill="#fff1c9"/>
+ <g><rect x="22" y="0" width="58" height="72" rx="2" fill="#2a2a2d"/><rect x="26" y="4" width="50" height="64" fill="#f6efe3"/>
+  <path d="M26,68 V44 Q37,30 48,42 Q58,24 76,40 V68Z" fill="#c9714d" opacity=".85"/><path d="M26,68 V54 Q42,44 56,52 Q66,46 76,52 V68Z" fill="#7fa476"/><circle cx="62" cy="20" r="7" fill="#e7b25b"/><path d="M30,58 Q51,50 72,60" fill="none" stroke="#f6efe3" stroke-width="1.2" opacity=".7"/></g>
+ <g><rect x="-34" y="18" width="40" height="40" rx="2" fill="#2a2a2d"/><rect x="-31" y="21" width="34" height="34" fill="#151517"/><path d="M-14,26 C-14,26 -23,37 -23,43 A9,9 0 0 0 -5,43 C-5,37 -14,26 -14,26Z" fill="#d6fb41"/><path d="M-12,33 L-17,42 L-14,42 L-15.5,48 L-10.5,39.5 L-13.5,39.5Z" fill="#151517"/></g>
+ <rect x="-44" y="88" width="64" height="3.5" rx="1" fill="#a97b50"/><rect x="-44" y="91.5" width="64" height="1.2" fill="#8a5f3a" opacity=".6"/>
+ <rect x="-38" y="76" width="9" height="12" rx="2" fill="#efe5d7" stroke="#cdbda7" stroke-width=".6"/><g fill="#6e9a63"><ellipse cx="-36" cy="72" rx="2.2" ry="6" transform="rotate(-18 -36 78)"/><ellipse cx="-32" cy="71" rx="2.2" ry="7"/><ellipse cx="-29" cy="73" rx="2" ry="5.5" transform="rotate(24 -29 78)"/></g>
+ <rect x="-22" y="80" width="16" height="8" rx="3.5" fill="#d6fb41" opacity=".9"/><rect x="-22" y="82.5" width="16" height="1" fill="#9db52a"/><rect x="-2" y="74" width="5" height="14" rx="1" fill="#f6efe3" stroke="#cdbda7" stroke-width=".6"/><rect x="5" y="70" width="4" height="18" rx="1" fill="#7fa476"/><rect x="10" y="72" width="4.5" height="16" rx="1" fill="#c9714d"/>
+ <g><path d="M160,-50 V-6" stroke="#8a7a66" stroke-width=".7"/><path d="M152,-6 h16 l-2,9 h-12z" fill="#efe5d7" stroke="#cdbda7" stroke-width=".6"/>
+  <g fill="#6e9a63" class="${A('sway')}">${[[154,6,-14],[157,14,-6],[160,22,4],[163,12,10],[166,5,18],[158,30,-2],[161,38,6],[155,20,-20],[165,26,14]].map(([x,y,r])=>`<ellipse cx="${x}" cy="${y}" rx="2.2" ry="4" transform="rotate(${r} ${x} ${y})"/>`).join('')}<path d="M157,3 Q156,20 159,40 M163,3 Q166,16 164,30" stroke="#5a7f50" stroke-width=".6" fill="none"/></g></g>
+ <g><path d="M226,181 v-4 a6,6 0 0 1 12,0 v4z" fill="#2a2a2d"/><path d="M228,172 a4,4 0 0 1 8,0" fill="none" stroke="#2a2a2d" stroke-width="2.2"/></g>
  <path d="M-58,146 L-18,146 L-24,181 L-52,181Z" fill="#c9714d"/><rect x="-60" y="142" width="44" height="6" rx="2" fill="#b5613f"/>
  <g class="${A('sway')}" fill="#5e8f58"><ellipse cx="-44" cy="112" rx="7" ry="30" transform="rotate(-22 -44 142)"/><ellipse cx="-30" cy="104" rx="7" ry="36" transform="rotate(6 -30 142)"/><ellipse cx="-20" cy="116" rx="6" ry="26" transform="rotate(30 -20 142)"/><ellipse cx="-36" cy="120" rx="6" ry="22" transform="rotate(-48 -36 142)" fill="#7aa86f"/><ellipse cx="-26" cy="122" rx="5" ry="20" transform="rotate(44 -26 142)" fill="#7aa86f"/></g>
- <rect x="-120" y="181" width="480" height="40" fill="url(#${id}f)"/>${[187,194,202,211].map(y=>`<line x1="-120" x2="360" y1="${y}" y2="${y}" stroke="#93673f" stroke-opacity=".35"/>`).join('')}
+ <rect x="-120" y="181" width="480" height="40" fill="url(#${id}f)"/>${[187,194,202,211].map(y=>`<line x1="-120" x2="360" y1="${y}" y2="${y}" stroke="#93673f" stroke-opacity=".35"/>`).join('')}${[[181,187,[-90,-20,55,130,205,280]],[187,194,[-60,15,95,170,245,320]],[194,202,[-100,-30,40,115,190,265]],[202,211,[-75,0,80,150,230,305]]].map(([a,b,xs])=>xs.map(x=>`<line x1="${x}" x2="${x+(x-110)*.06}" y1="${a}" y2="${b}" stroke="#93673f" stroke-opacity=".28"/>`).join('')).join('')}<rect x="-120" y="181" width="480" height="2.5" fill="#000" opacity=".06"/>
  <polygon points="40,181 236,181 300,221 -40,221" fill="#fff8e8" opacity=".18"/>
  ${amb?[0,1,2,3,4,5].map(k=>`<circle class="mote" style="animation-delay:${-k*2.1}s" cx="${170+k*14}" cy="${20+k*18}" r="${.8+(k%3)*.4}" fill="#fff"/>`).join(''):''}`;
  if(kind==='gym')return`<defs><linearGradient id="${id}w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2c313a"/><stop offset="1" stop-color="#1f232a"/></linearGradient><radialGradient id="${id}l" cx=".5" cy="0" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".18"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>
@@ -1627,6 +1638,15 @@ const FDB=[
 ['beer','Beer','Snacks & drinks','1 pint',500,43,.5,3.6,0,0,0,0,4,27,4,.02,6,.01,0,0,0,0,0,.02,6,.05],
 ['wine','Red wine','Snacks & drinks','1 glass',150,85,.1,2.6,0,0,.6,0,4,127,8,.46,12,.14,0,0,0,0,0,0,1,.06]
 ,['frchick','Fried chicken, breaded','Protein','1 piece',130,260,23,9,15,.4,.2,4,520,230,25,1.2,23,1.8,30,0,.2,1.2,15,.3,15,.35]
+,['mango','Mango','Fruit & veg','1 cup',165,60,.8,15,.4,1.6,13.7,.1,1,168,11,.2,10,.1,54,36,0,.9,4.2,0,43,.12]
+,['edam','Edamame, shelled, cooked','Legumes & nuts','1/2 cup',75,121,11.9,8.9,5.2,5.2,2.2,.6,6,436,63,2.3,64,1.4,15,6.1,0,.7,27,0,311,.1]
+,['mayo','Mayonnaise','Fats','1 tbsp',14,680,1,.6,75,0,.6,11.7,635,20,8,.2,1,.1,20,0,.2,3.3,163,.1,5,0]
+,['msauce','Mango / sweet chili sauce','Snacks & drinks','1 tbsp',18,220,.5,54,.2,.5,48,0,900,60,8,.3,5,.1,20,3,0,.2,1,0,3,.05]
+,['soy','Soy sauce','Snacks & drinks','1 tbsp',16,53,8,4.9,.6,.8,.4,.1,5500,435,33,1.5,43,.4,0,0,0,0,0,0,14,.2]
+,['ajvar','Ajvar','Fruit & veg','2 tbsp',40,85,1.4,8,5,2.5,6,.7,600,220,15,.6,15,.2,90,20,0,2,6,0,20,.2]
+,['kajmak','Kajmak','Dairy','1 tbsp',20,420,4,3,44,0,3,28,500,80,100,.1,9,.4,350,0,.3,1,3,.3,5,.03]
+,['lepinja','Lepinja / somun (flatbread)','Grains','1 piece',150,270,9,52,2,2.2,2,.4,480,110,20,2.5,22,.8,0,0,0,.2,.5,0,90,.05]
+,['scream','Sour cream','Dairy','2 tbsp',30,193,2.4,4.6,19,0,3.4,11,31,125,100,.1,10,.3,175,.9,.1,.5,1.5,.3,11,.02]
 ,['pokeebi','Poke ebi mango (shrimp poke bowl, Momo)','Protein','1 bowl',470,145,7,20,3.9,1.3,5,.6,260,200,25,.7,22,.6,30,8,0,1,10,.3,35,.1]
 ,['ragu','Ragu soup (ragu čorba)','Protein','1 bowl',350,75,5,5,4,.8,1.2,1.5,380,180,15,.7,10,1,120,3,0,.3,3,.4,10,.1]
 ,['cevapi','Ćevapi, grilled','Protein','5 pieces',150,260,18,2,20,0,.5,8,700,280,20,2.2,20,4,0,0,.1,.3,1.5,2,8,.3]
@@ -1643,7 +1663,7 @@ const LIMITS=['sug','sat','na'];
 function ftargets(){const n=nutrition(),p=S.profile||{},fem=p.sex==='female',kcal=n?n.kcal:2200,prot=n?n.prot:Math.round(kcal*.25/4),fat=Math.round(kcal*.28/9),carb=Math.max(50,Math.round((kcal-prot*4-fat*9)/4));
  return{kcal,p:prot,c:carb,f:fat,fib:Math.round(kcal/1000*14),sug:50,sat:Math.round(kcal*.1/9),na:2300,k:fem?2600:3400,ca:1000,fe:fem?18:8,mg:fem?320:420,zn:fem?8:11,va:fem?700:900,vc:fem?75:90,vd:15,ve:15,vk:fem?90:120,b12:2.4,fol:400,b6:1.3,water:n?+n.water:2.5}}
 const FS=()=>(S.food=S.food||{days:{},custom:[],recent:[]});
-const allFoods=()=>[...FS().custom,...FDB];
+const allFoods=()=>[...FS().custom,...recipeFoods(),...FDB];
 const foodById=id=>allFoods().find(f=>f.id===id);
 let fDay=TODAY();
 const fday=k=>{const F=FS();return F.days[k]=F.days[k]||{entries:[],water:0}};
@@ -1662,7 +1682,59 @@ function nutBreak(k){const T=ftargets(),d=fday(fDay),[nm,u]=k==='kcal'?['Calorie
   ${L.length?`<ul class="nbk">${L.map(a=>{const pc=tot?a.v/tot*100:0;return`<li><span><b>${esc(a.f.name)}</b><br><small>${r0(a.g)} g · ${[...a.meals].join(', ')}</small></span><span style="text-align:right"><b>${Math.round(pc)}%</b><br><small>${r0(a.v)} ${u}${tg?' · '+Math.round(a.v/tg*100)+'% of '+(lim?'limit':'target'):''}</small></span><span class="bar"><i style="width:${pc.toFixed(1)}%"></i></span></li>`}).join('')}</ul>`
   :`<p class="meta">Nothing you logged ${fDay===TODAY()?'today':'that day'} has ${esc(nm.toLowerCase())}.</p>`}
   ${!lim&&best.length&&tg&&tot<tg?`<h4 style="margin:20px 0 6px">Easy ways to get more</h4><p class="meta" style="margin:0">${best.map(([f,v])=>esc(f.name)+' ('+r0(v)+' '+u+' per '+esc(f.pn)+')').join(' · ')}</p>`:''}`,nm)}
-function renderFood(){const T=ftargets(),t=totals(fDay),d=fday(fDay),eaten=Math.round(t.kcal),left=T.kcal-eaten,C=2*Math.PI*54,pc=Math.min(1,eaten/T.kcal),isT=fDay===TODAY();
+
+/* ================= recipes ================= */
+const RECIPES=[
+ {id:'b-poke',name:'Poke ebi mango (Momo)',serv:1,items:[['rice',180],['shrimp',100],['mango',70],['edam',50],['tom',60],['cucu',60],['msauce',25],['mayo',15]]},
+ {id:'b-cevapi',name:'Ćevapi plate with lepinja',serv:1,items:[['cevapi',250],['lepinja',150],['onion',50],['kajmak',20],['ajvar',40]]},
+ {id:'b-greek',name:'Greek salad with chicken',serv:1,items:[['chick',150],['tom',150],['cucu',120],['pepper',60],['onion',30],['feta',50],['oil',10]]},
+ {id:'b-oats',name:'Overnight protein oats',serv:1,items:[['oats',60],['milk',200],['yog2',100],['blue',75],['chia',10],['honey',10]]},
+ {id:'b-stir',name:'Chicken stir-fry with rice',serv:1,items:[['chick',150],['rice',150],['broc',120],['pepper',80],['soy',15],['oil',8]]},
+ {id:'b-salmon',name:'Salmon & edamame bowl',serv:1,items:[['salmon',150],['brice',150],['avo',70],['edam',60],['cucu',60],['soy',10]]},
+ {id:'b-lentil',name:'Lentil stew (čorba)',serv:2,items:[['lent',400],['carrot',120],['onion',80],['pot',200],['oil',15]]},
+ {id:'b-tuna',name:'Tuna tomato pasta',serv:1,items:[['pasta',200],['tuna',112],['tom',150],['spin',30],['oil',10]]},
+ {id:'b-omelette',name:'Omelette with ajvar & feta',serv:1,items:[['egg',150],['pepper',60],['feta',30],['ajvar',30],['wbread',60]]},
+ {id:'b-shake',name:'Recovery shake',serv:1,items:[['whey',30],['milk',300],['banana',118],['oats',30],['pb',16]]},
+ {id:'b-skyr',name:'Skyr berry bowl',serv:1,items:[['skyr',200],['straw',100],['blue',50],['walnut',15],['honey',8]]}];
+const RS=()=>(FS().recipes=FS().recipes||[]);
+const allRecipes=()=>{const mine=RS(),ids=new Set(mine.map(r=>r.base||r.id));return[...mine.filter(r=>!r.del&&!r.once),...RECIPES.filter(r=>!ids.has(r.id))]};
+const recWeight=r=>r.items.reduce((a,[,g])=>a+(+g||0),0);
+function recNut(r){const t={};NK.forEach(k=>t[k]=0);r.items.forEach(([f,g])=>{const o=FDB.find(x=>x.id===f)||FS().custom.find(x=>x.id===f);if(o)NK.forEach(k=>t[k]+=(o[k]||0)*g/100)});return t}
+function recFood(r){const W=recWeight(r)||1,t=recNut(r),o={id:'r:'+r.id,name:r.name,cat:'Recipes',pn:'1 serving',pg:Math.round(W/(r.serv||1)),hid:!!r.del||!!r.once};NK.forEach(k=>o[k]=t[k]/W*100);return o}
+const recipeFoods=()=>[...RS(),...RECIPES].map(recFood);
+const mealNow=()=>{const h=new Date().getHours();return h<11?'Breakfast':h<16?'Lunch':h<21?'Dinner':'Snacks'};
+function logRecipe(r,meal,serv){const f=recFood(r);fday(fDay).entries.push({id:uid(),f:f.id,g:Math.round(f.pg*(serv||1)),meal});const F=FS();F.recent=[f.id,...F.recent.filter(x=>x!==f.id)].slice(0,30);save();renderFood();try{renderWork()}catch(e){}toast(`Logged ${r.name} to ${meal}`)}
+function recipeEditor(r0_,meal){const r=JSON.parse(JSON.stringify(r0_||{id:'',name:'',serv:1,items:[]})),mine=RS().some(x=>x.id===r.id);meal=meal||mealNow();let q='';
+ const b=openSheet(`<div class="shd"><h3>${r0_?esc(r.name):'New recipe'}</h3>${closeBtn}</div>
+  <div class="row"><label class="f" style="flex:2 1 200px">Name<input type="text" id="reN" value="${esc(r.name)}" placeholder="e.g. My chicken bowl"></label><label class="f">Servings<input type="number" id="reS" min="1" step="1" value="${r.serv||1}" style="width:90px"></label></div>
+  <div id="reI" class="reI"></div>
+  <div class="reAdd"><input type="search" id="reQ" placeholder="Add ingredient: search foods" style="width:100%"><div class="pick" id="reR" style="max-height:30vh"></div></div>
+  <div id="reT" class="reT"></div>
+  <div class="row" style="margin-top:12px"><label class="f">Log to<select id="reM">${MEALS.map(x=>`<option ${x===meal?'selected':''}>${x}</option>`).join('')}</select></label><label class="f">Servings eaten<input type="number" id="reE" min=".25" step=".25" value="1" style="width:90px"></label></div>
+  <div class="row" style="margin-top:12px"><button class="btn pri" id="reLog">Log it</button><button class="btn" id="reSave">${mine?'Save recipe':'Save as my recipe'}</button>${mine?'<button class="btn" id="reDel" style="color:var(--red)">Delete</button>':''}</div>
+  <p class="meta" id="reMsg">Change the grams to match what is on your plate. <b>Log it</b> logs these amounts; <b>Save</b> keeps them for next time.</p>`,'Recipe');
+ const fo=id=>FDB.find(x=>x.id===id)||FS().custom.find(x=>x.id===id);
+ const draw=()=>{$('#reI',b).innerHTML=r.items.length?r.items.map(([f,g],i)=>{const o=fo(f);return`<div class="rei"><span>${esc(o?o.name:f)}<small>${o?Math.round(o.kcal*g/100)+' kcal · '+r0(o.p*g/100)+' g protein':''}</small></span><button class="ib sm" data-rm1="${i}" aria-label="Less">−</button><input type="number" min="0" step="5" value="${g}" data-rg="${i}" aria-label="Grams"><span class="meta">g</span><button class="ib sm" data-rp1="${i}" aria-label="More">+</button><button class="ib sm" data-rx="${i}" aria-label="Remove">×</button></div>`}).join(''):'<p class="meta">No ingredients yet. Search below to add some.</p>';
+  const sv=Math.max(1,+$('#reS',b).value||1),t=recNut(r),W=recWeight(r);$('#reT',b).innerHTML=`<b>Per serving</b> (${Math.round(W/sv)} g): ${Math.round(t.kcal/sv)} kcal · ${r0(t.p/sv)} g protein · ${r0(t.c/sv)} g carbs · ${r0(t.f/sv)} g fat · ${r0(t.fib/sv)} g fibre`};
+ const drawR=()=>{const L=q?[...FS().custom,...FDB].filter(f=>f.name.toLowerCase().includes(q)).slice(0,20):[];$('#reR',b).innerHTML=L.map(f=>`<button data-ra="${esc(f.id)}"><span>${esc(f.name)}<br><span class="meta">${Math.round(f.kcal)} kcal / 100 g</span></span><b>+</b></button>`).join('')};
+ b.addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;const d=t.dataset;
+  if(d.rm1!=null){r.items[+d.rm1][1]=Math.max(0,r.items[+d.rm1][1]-10);draw()}else if(d.rp1!=null){r.items[+d.rp1][1]+=10;draw()}else if(d.rx!=null){r.items.splice(+d.rx,1);draw()}
+  else if(d.ra){const f=fo(d.ra);r.items.push([d.ra,f&&f.pg<300?Math.round(f.pg):100]);q='';$('#reQ',b).value='';drawR();draw()}});
+ b.addEventListener('change',e=>{const i=e.target.dataset.rg;if(i!=null){r.items[+i][1]=Math.max(0,+e.target.value||0);draw()}});
+ $('#reQ',b).oninput=e=>{q=e.target.value.trim().toLowerCase();drawR()};$('#reS',b).oninput=draw;
+ const collect=()=>{r.name=$('#reN',b).value.trim()||r.name||'My recipe';r.serv=Math.max(1,+$('#reS',b).value||1);r.items=r.items.filter(([,g])=>g>0)};
+ $('#reSave',b).onclick=()=>{collect();if(!r.items.length){$('#reMsg',b).textContent='Add at least one ingredient.';return}const L=RS();if(mine){L[L.findIndex(x=>x.id===r.id)]=r}else{const base=r.id&&r.id.startsWith('b-')?r.id:null;r.base=base;r.id=uid();L.unshift(r)}save();closeSheet();renderFood();toast('Recipe saved')};
+ $('#reLog',b).onclick=()=>{collect();if(!r.items.length){$('#reMsg',b).textContent='Add at least one ingredient.';return}const orig=r0_&&JSON.stringify(r0_.items)===JSON.stringify(r.items)&&r0_.serv===r.serv&&(mine||RECIPES.some(x=>x.id===r.id));let use=r;if(!orig){use={...r,id:uid(),once:1};RS().push(use)}logRecipe(use,$('#reM',b).value,+$('#reE',b).value||1);closeSheet()};
+ const D=$('#reDel',b);if(D)D.onclick=()=>{const x=RS().find(y=>y.id===r.id);if(x)x.del=1;save();closeSheet();renderFood();toast('Recipe deleted')};
+ draw()}
+let recAll=false;function renderRecipes(){const h=$('#fRec');if(!h)return;const LA=allRecipes(),L=recAll?LA:LA.slice(0,4);
+ h.innerHTML=`<div class="vhead" style="margin-bottom:8px"><div><h3>Recipes</h3><p>Tap a recipe to change the grams of each ingredient, then log it. Save your own for one-tap logging.</p></div><button class="btn pri sm" id="recNew">+ New recipe</button></div>
+ <div class="recl">${L.map(r=>{const t=recNut(r),sv=r.serv||1;return`<div class="card rec"><div><b>${esc(r.name)}</b>${RS().includes(r)?' <span class="meta" style="font-size:11px">MINE</span>':''}<div class="meta">${Math.round(t.kcal/sv)} kcal · ${Math.round(t.p/sv)} g protein · ${r.items.length} ingredients</div></div><div class="row"><button class="btn sm" data-recq="${r.id}">Log</button><button class="btn sm" data-rece="${r.id}">Edit grams</button></div></div>`}).join('')}</div>${LA.length>4?`<button class="btn sm" id="recMore" style="margin-top:10px">${recAll?'Show fewer':'Show all '+LA.length+' recipes'}</button>`:''}`;
+ {const m=$('#recMore',h);if(m)m.onclick=()=>{recAll=!recAll;renderRecipes()}}
+ $('#recNew',h).onclick=()=>recipeEditor(null);
+ $$('[data-recq]',h).forEach(x=>x.onclick=()=>logRecipe(allRecipes().find(r=>r.id===x.dataset.recq),mealNow(),1));
+ $$('[data-rece]',h).forEach(x=>x.onclick=()=>recipeEditor(allRecipes().find(r=>r.id===x.dataset.rece)))}
+function renderFood(){setTimeout(renderRecipes);const T=ftargets(),t=totals(fDay),d=fday(fDay),eaten=Math.round(t.kcal),left=T.kcal-eaten,C=2*Math.PI*54,pc=Math.min(1,eaten/T.kcal),isT=fDay===TODAY();
  const burned=Math.round(S.acts.filter(a=>dkey(a.start)===fDay).reduce((s,a)=>s+(a.cal||0),0));
  $('#fDate').textContent=isT?'Today':new Date(fDay).toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'});$('#fNext').disabled=isT;
  $('#fTop').innerHTML=`<div class="fring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="none" stroke="#2b2b30" stroke-width="11"/><circle cx="60" cy="60" r="54" fill="none" stroke="${left<0?'var(--red)':'var(--lime)'}" stroke-width="11" stroke-linecap="round" stroke-dasharray="${f1(C*pc)} ${f1(C)}"/></svg><div class="v"><div><b>${Math.abs(left)}</b><small>${left<0?'kcal over':'kcal left'}</small></div></div></div>
@@ -1690,10 +1762,10 @@ $('#fWater').addEventListener('click',e=>{const b=e.target.closest('[data-w]');i
 function addFood(meal){const F=FS();let cat='All';
  const b=openSheet(`<div class="shd"><h3>Add to ${esc(meal)}</h3>${closeBtn}</div>
   <input type="search" id="fq" placeholder="Search foods, e.g. chicken, oats, banana" aria-label="Search foods" style="width:100%">
-  <div class="row" id="fcat" style="margin:10px 0">${['All','Recent','Protein','Dairy','Grains','Fruit & veg','Legumes & nuts','Fats','Snacks & drinks','Desserts','My foods'].map(c=>`<button class="chip" data-c="${c}" aria-pressed="${c==='All'}">${c}</button>`).join('')}</div>
+  <div class="row" id="fcat" style="margin:10px 0">${['All','Recent','Protein','Dairy','Grains','Fruit & veg','Legumes & nuts','Fats','Snacks & drinks','Desserts','Recipes','My foods'].map(c=>`<button class="chip" data-c="${c}" aria-pressed="${c==='All'}">${c}</button>`).join('')}</div>
   <div class="pick" id="fres" style="max-height:46vh"></div>
   <div class="row" style="margin-top:12px"><button class="btn" id="fOn">Search online database</button><button class="btn" id="fBar">Barcode</button><button class="btn" id="fNew">Create a food</button></div><div class="meta" id="fMsg" style="margin-top:6px"></div>`,'Add food');
- const draw=(extra)=>{const q=$('#fq',b).value.trim().toLowerCase();let list=cat==='Recent'?F.recent.map(foodById).filter(Boolean):cat==='My foods'?F.custom:allFoods().filter(f=>cat==='All'||f.cat===cat);
+ const draw=(extra)=>{const q=$('#fq',b).value.trim().toLowerCase();let list=cat==='Recent'?F.recent.map(foodById).filter(Boolean):cat==='My foods'?F.custom:allFoods().filter(f=>(cat==='All'&&!f.hid)||f.cat===cat&&!f.hid);
   if(q)list=list.filter(f=>(f.name+' '+(f.brand||'')).toLowerCase().includes(q));if(extra)list=[...extra,...list];
   $('#fres',b).innerHTML=list.length?list.slice(0,80).map(f=>`<button data-f="${esc(f.id)}"><span>${esc(f.name)}${f.brand?` <span class="meta">${esc(f.brand)}</span>`:''}<br><span class="meta">${esc(f.pn)} · ${Math.round(f.kcal*f.pg/100)} kcal · ${r0(f.p*f.pg/100)} g protein</span></span><b>+</b></button>`).join(''):'<p class="meta" style="padding:12px">No match here. Try the online database or create the food.</p>'};
  let online=[];draw();$('#fq',b).oninput=()=>draw(online);
@@ -1719,7 +1791,7 @@ function barcode(meal){let stream=null,stop=false;const canScan='BarcodeDetector
  $('#bcGo',b).onclick=()=>{const c=$('#bcIn',b).value.replace(/\D/g,'');if(c.length<6){msg.textContent='Enter the full number under the barcode.';return}end();lookupCode(c,meal,msg)};
  if(canScan)(async()=>{try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});const v=$('#bcv',b);v.srcObject=stream;await v.play();const det=new BarcodeDetector({formats:['ean_13','ean_8','upc_a','upc_e']});
   const tick=async()=>{if(stop)return;try{const r=await det.detect(v);if(r.length){end();lookupCode(r[0].rawValue,meal,msg);return}}catch(e){}setTimeout(tick,300)};tick()}catch(e){msg.textContent='Camera not available here. Type the number instead.'}})()}
-function amountSheet(f,meal,entry){const F=FS();let g=entry?entry.g:f.pg,m=entry?entry.meal:meal;const T=ftargets();
+function amountSheet(f,meal,entry){if(f.id&&f.id.startsWith('r:')&&!entry){const r=[...RS(),...RECIPES].find(x=>'r:'+x.id===f.id);if(r)return recipeEditor(r,meal)}const F=FS();let g=entry?entry.g:f.pg,m=entry?entry.meal:meal;const T=ftargets();
  const b=openSheet(`<div class="shd"><div><h3>${esc(f.name)}</h3><div class="meta">${f.brand?esc(f.brand)+' · ':''}${esc(f.pn)} = ${r0(f.pg)} g</div></div>${closeBtn}</div>
   <div class="row"><label class="f">Portions<input type="number" id="aP" min="0" step="0.25" value="${r0(g/f.pg)}" style="width:110px"></label><label class="f">Grams<input type="number" id="aG" min="0" step="1" value="${r0(g)}" style="width:110px"></label>
   <label class="f">Meal<select id="aM">${MEALS.map(x=>`<option ${x===m?'selected':''}>${x}</option>`).join('')}</select></label></div>
