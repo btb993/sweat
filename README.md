@@ -35,3 +35,26 @@ Your plan, workouts, history and check-ins are saved in your browser on that dev
 - `index.html`: the whole app
 - `manifest.webmanifest`, `icons/`: app name and icons for installing
 - `sw.js`: offline support
+
+## Turn on accounts and sync (phone ↔ PC)
+
+SWEAT works without an account; data is saved on each device. To get one account that keeps your phone and PC in live sync:
+
+1. Go to https://console.firebase.google.com and create a project (free Spark plan is enough).
+2. **Build → Authentication → Get started**, then enable **Email/Password** and **Google**.
+3. In Authentication → Settings → Authorized domains, add `btb993.github.io`.
+4. **Build → Firestore Database → Create database** (production mode), then on the **Rules** tab paste:
+   ```
+   rules_version = '2';
+   service cloud.firestore {
+     match /databases/{db}/documents {
+       match /users/{uid} {
+         allow read, write: if request.auth != null && request.auth.uid == uid;
+       }
+     }
+   }
+   ```
+5. Project settings → **Your apps → Web (</>)**, register the app, and copy the `firebaseConfig` values into `firebase-config.js` (replace `null`).
+6. Commit. The welcome screen now offers **Create account / Sign in**, and Profile → Account shows sync status.
+
+Changes sync within a couple of seconds. Bike console photos stay on the device that took them; everything else syncs.
