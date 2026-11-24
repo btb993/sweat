@@ -1,4 +1,6 @@
-# SWEAT
+# SWEAT.
+
+**Become your own athlete.**
 
 Your personal training app: plans built for your goal, follow-along workout videos with an illustrated trainer, muscle maps, and health tracking. Everything runs in the browser and your data stays on your device.
 
