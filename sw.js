@@ -1,5 +1,5 @@
 // SWEAT service worker: makes the app open offline.
-const CACHE = 'sweat-v4';
+const CACHE = 'sweat-v5';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/icon.svg'];
 
 self.addEventListener('install', e => {
@@ -18,6 +18,11 @@ self.addEventListener('fetch', e => {
   if (req.mode === 'navigate' || (url.origin === location.origin && url.pathname.endsWith('/index.html'))) {
     e.respondWith(fetch(req).then(r => { const copy = r.clone(); caches.open(CACHE).then(c => c.put('./index.html', copy)); return r; })
       .catch(() => caches.match('./index.html')));
+    return;
+  }
+  // Same-site scripts and data: network first, so config changes arrive.
+  if (url.origin === location.origin && /\.(js|json|webmanifest)$/.test(url.pathname)) {
+    e.respondWith(fetch(req).then(r => { const copy = r.clone(); caches.open(CACHE).then(c => c.put(req, copy)); return r; }).catch(() => caches.match(req)));
     return;
   }
   // Everything else (icons, fonts): cache first, then network.
