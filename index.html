@@ -1613,14 +1613,14 @@ function customFood(meal){const b=openSheet(`<div class="shd"><h3>Create a food<
 /* ================= account & sync (Supabase) ================= */
 var SB=null,CLOUD={user:null,ch:null,status:'',pushT:0};
 const SBC=()=>window.SWEAT_SUPABASE||{};
-const cloudOn=()=>!!(SBC().url&&SBC().key);
+const cloudOn=()=>!!(SBC().url&&SBC().key)&&!/claude|anthropic/.test(location.hostname)&&!window.claude;
 const DEVID=(()=>{try{let d=localStorage.getItem('sweat.dev');if(!d){d=uid();localStorage.setItem('sweat.dev',d)}return d}catch(e){return uid()}})();
 const loadJS=u=>new Promise((res,rej)=>{const e=document.createElement('script');e.src=u;e.onload=res;e.onerror=rej;document.head.appendChild(e)});
 function cloudStatus(t){CLOUD.status=t;const e=$('#acSt');if(e)e.textContent=t}
 const hhm=()=>new Date().toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'});
 const TBL='sweat_state';
 async function cloudInit(){if(!cloudOn())return null;if(SB)return SB;
- try{await loadJS('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');SB=supabase.createClient(SBC().url,SBC().key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+ try{await loadJS('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');SB=supabase.createClient(SBC().url.replace(/\/(rest|auth)\/v1\/?$/,'').replace(/\/$/,''),SBC().key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
   SB.auth.onAuthStateChange((ev,ses)=>{const u=ses&&ses.user||null;if((u&&u.id)===(CLOUD.user&&CLOUD.user.id))return;CLOUD.user=u;try{topBtns()}catch(e){}
    if(CLOUD.ch){SB.removeChannel(CLOUD.ch);CLOUD.ch=null}if(u)cloudAttach();else cloudStatus('Not signed in');renderAcct()});
   return SB}catch(e){cloudStatus('Could not reach the sync service. Check your connection.');return null}}
