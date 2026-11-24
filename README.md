@@ -36,25 +36,28 @@ Your plan, workouts, history and check-ins are saved in your browser on that dev
 - `manifest.webmanifest`, `icons/`: app name and icons for installing
 - `sw.js`: offline support
 
-## Turn on accounts and sync (phone ↔ PC)
+## Turn on accounts and sync (phone ↔ PC) with Supabase
 
 SWEAT works without an account; data is saved on each device. To get one account that keeps your phone and PC in live sync:
 
-1. Go to https://console.firebase.google.com and create a project (free Spark plan is enough).
-2. **Build → Authentication → Get started**, then enable **Email/Password** and **Google**.
-3. In Authentication → Settings → Authorized domains, add `btb993.github.io`.
-4. **Build → Firestore Database → Create database** (production mode), then on the **Rules** tab paste:
+1. In https://supabase.com/dashboard create a new project (the free plan is enough), or use an existing one.
+2. Open **SQL Editor → New query**, paste this and click **Run**:
+   ```sql
+   create table if not exists public.sweat_state (
+     user_id uuid primary key references auth.users(id) on delete cascade,
+     json text not null,
+     at bigint not null,
+     dev text,
+     updated_at timestamptz default now()
+   );
+   alter table public.sweat_state enable row level security;
+   create policy "own row read"   on public.sweat_state for select using (auth.uid() = user_id);
+   create policy "own row insert" on public.sweat_state for insert with check (auth.uid() = user_id);
+   create policy "own row update" on public.sweat_state for update using (auth.uid() = user_id);
+   alter publication supabase_realtime add table public.sweat_state;
    ```
-   rules_version = '2';
-   service cloud.firestore {
-     match /databases/{db}/documents {
-       match /users/{uid} {
-         allow read, write: if request.auth != null && request.auth.uid == uid;
-       }
-     }
-   }
-   ```
-5. Project settings → **Your apps → Web (</>)**, register the app, and copy the `firebaseConfig` values into `firebase-config.js` (replace `null`).
-6. Commit. The welcome screen now offers **Create account / Sign in**, and Profile → Account shows sync status.
+3. **Authentication → URL Configuration**: set **Site URL** to `https://btb993.github.io/sweat/` and add the same address under **Redirect URLs**.
+4. **Project Settings → API**: copy the **Project URL** and the **anon public** key into `supabase-config.js`, and commit.
+5. Optional: **Authentication → Providers → Google** to allow "Continue with Google".
 
-Changes sync within a couple of seconds. Bike console photos stay on the device that took them; everything else syncs.
+The welcome screen then offers **Create account / Sign in**, the top bar shows **Sign in** (or **Synced**), and changes reach your other device within a couple of seconds. Bike console photos stay on the device that took them.

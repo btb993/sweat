@@ -7,7 +7,7 @@
 <title>SWEAT</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%3E%20%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%22120%22%20fill%3D%22%23d6fb41%22/%3E%20%20%3Cpath%20d%3D%22M256%2070%20C256%2070%20120%20230%20120%20330%20A136%20136%200%200%200%20392%20330%20C392%20230%20256%2070%20256%2070Z%22%20fill%3D%22%23141414%22/%3E%20%20%3Cpath%20d%3D%22M286%20168%20L206%20312%20L254%20312%20L232%20412%20L318%20262%20L268%20262%20Z%22%20fill%3D%22%23d6fb41%22/%3E%3C/svg%3E">
 <link rel="manifest" href="manifest.webmanifest">
-<script src="firebase-config.js"></script>
+<script src="supabase-config.js"></script>
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -42,7 +42,8 @@ a{color:var(--blue)}
 .hrow{display:flex;align-items:center;gap:16px;max-width:1240px;margin:auto}
 .logo{display:flex;align-items:center;gap:10px}
 .logo svg{width:34px;height:34px}.logo b{font:italic 900 30px/1 Barlow,sans-serif;color:var(--lime);letter-spacing:-.01em}
-.me{margin-left:auto;width:44px;height:44px;border-radius:50%;border:2px solid var(--lime);background:transparent;color:var(--lime);font:800 18px "Barlow Condensed";display:grid;place-items:center}
+.hact{margin-left:auto;display:flex;gap:8px;margin-right:10px}.hbtn{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 14px;border-radius:999px;border:1.5px solid var(--lime);background:transparent;color:var(--lime);font:700 14px Inter,system-ui,sans-serif;cursor:pointer}.hbtn.pri{background:var(--lime);color:#0b0b0b}.hbtn:hover{background:rgba(214,251,65,.12)}.hbtn.pri:hover{background:#e4ff6e}@media(max-width:430px){.hbtn{padding:0 11px;font-size:13px;height:38px}.hact{gap:6px;margin-right:8px}#acTop{width:38px;padding:0;justify-content:center}#acTop span{display:none}}.hbtn{white-space:nowrap;flex-shrink:0}
+.me{width:44px;height:44px;border-radius:50%;border:2px solid var(--lime);background:transparent;color:var(--lime);font:800 18px "Barlow Condensed";display:grid;place-items:center}
 .tabs{display:flex;gap:4px;max-width:1240px;margin:10px auto 0}
 .tabs a{color:var(--mut);text-decoration:none;padding:10px 16px 12px;font-weight:600;border-bottom:3px solid transparent}
 .tabs a.on{color:var(--lime);border-color:var(--lime)}
@@ -436,7 +437,7 @@ video{width:100%;border-radius:14px;background:#000;max-height:360px}
 <header class="hdr">
   <div class="hrow">
     <div class="logo"><svg viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" rx="120" fill="#d6fb41"/><path d="M256 70 C256 70 120 230 120 330 A136 136 0 0 0 392 330 C392 230 256 70 256 70Z" fill="#141414"/><path d="M286 168 L206 312 L254 312 L232 412 L318 262 L268 262 Z" fill="#d6fb41"/></svg><b>SWEAT.</b></div>
-    <button class="me" id="meBtn" aria-label="Profile, equipment and settings">S</button>
+    <div class="hact"><button class="hbtn" id="instTop" hidden><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span>Install</span></button><button class="hbtn" id="acTop" hidden><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span id="acTopT">Sign in</span></button></div><button class="me" id="meBtn" aria-label="Profile, equipment and settings">S</button>
   </div>
   <nav class="tabs" id="tabs"><a href="#today">Today</a><a href="#plan">Plan</a><a href="#library">Exercises</a><a href="#food">Food</a><a href="#body">Body</a><a href="#progress">Progress</a></nav>
 </header>
@@ -1609,44 +1610,47 @@ function customFood(meal){const b=openSheet(`<div class="shd"><h3>Create a food<
 
 
 
-/* ================= account & sync (Firebase) ================= */
-var FB=null,CLOUD={user:null,unsub:null,status:'',pushT:0};
-const cloudOn=()=>!!(window.SWEAT_FIREBASE&&window.SWEAT_FIREBASE.apiKey);
+/* ================= account & sync (Supabase) ================= */
+var SB=null,CLOUD={user:null,ch:null,status:'',pushT:0};
+const SBC=()=>window.SWEAT_SUPABASE||{};
+const cloudOn=()=>!!(SBC().url&&SBC().key);
 const DEVID=(()=>{try{let d=localStorage.getItem('sweat.dev');if(!d){d=uid();localStorage.setItem('sweat.dev',d)}return d}catch(e){return uid()}})();
 const loadJS=u=>new Promise((res,rej)=>{const e=document.createElement('script');e.src=u;e.onload=res;e.onerror=rej;document.head.appendChild(e)});
 function cloudStatus(t){CLOUD.status=t;const e=$('#acSt');if(e)e.textContent=t}
 const hhm=()=>new Date().toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'});
-async function cloudInit(){if(!cloudOn())return null;if(FB)return FB;const b='https://www.gstatic.com/firebasejs/10.12.2/';
- try{await loadJS(b+'firebase-app-compat.js');await loadJS(b+'firebase-auth-compat.js');await loadJS(b+'firebase-firestore-compat.js');
-  firebase.initializeApp(window.SWEAT_FIREBASE);FB={auth:firebase.auth(),db:firebase.firestore()};
-  FB.auth.onAuthStateChanged(u=>{CLOUD.user=u;if(CLOUD.unsub){CLOUD.unsub();CLOUD.unsub=null}if(u)cloudAttach();else cloudStatus('Not signed in');renderAcct()});return FB}
- catch(e){cloudStatus('Could not reach the sync service. Check your connection.');return null}}
+const TBL='sweat_state';
+async function cloudInit(){if(!cloudOn())return null;if(SB)return SB;
+ try{await loadJS('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');SB=supabase.createClient(SBC().url,SBC().key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+  SB.auth.onAuthStateChange((ev,ses)=>{const u=ses&&ses.user||null;if((u&&u.id)===(CLOUD.user&&CLOUD.user.id))return;CLOUD.user=u;try{topBtns()}catch(e){}
+   if(CLOUD.ch){SB.removeChannel(CLOUD.ch);CLOUD.ch=null}if(u)cloudAttach();else cloudStatus('Not signed in');renderAcct()});
+  return SB}catch(e){cloudStatus('Could not reach the sync service. Check your connection.');return null}}
 const stripPhotos=o=>{const c=JSON.parse(JSON.stringify(o));(c.history||[]).forEach(h=>{if(h.bike)delete h.bike.photo});return c};
 function applyRemote(d){try{const n=JSON.parse(d.json),ph={};S.history.forEach(h=>{if(h.bike&&h.bike.photo)ph[h.id]=h.bike.photo});
- S={...blank(),...n,at:d.at};S.history.forEach(h=>{if(ph[h.id])h.bike={...(h.bike||{}),photo:ph[h.id]}});try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}
- const sb=$('#sbox');if(S.profile&&sb&&(sb.getAttribute('aria-label')==='Set up your plan'||sb.getAttribute('aria-label')==='Welcome'))closeSheet();renderAll();if(!S.profile&&$('#sheet').hidden)onboard(0)}catch(e){}}
-async function cloudPushNow(){if(!FB||!CLOUD.user)return;try{await FB.db.collection('users').doc(CLOUD.user.uid).set({json:JSON.stringify(stripPhotos(S)),at:S.at,dev:DEVID});cloudStatus('Synced at '+hhm())}catch(e){cloudStatus('Sync error: '+e.message)}}
+ S={...blank(),...n,at:+d.at};S.history.forEach(h=>{if(ph[h.id])h.bike={...(h.bike||{}),photo:ph[h.id]}});try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}
+ const sb=$('#sbox');if(S.profile&&sb&&/Set up your plan|Welcome/.test(sb.getAttribute('aria-label')||''))closeSheet();renderAll();if(!S.profile&&$('#sheet').hidden)onboard(0)}catch(e){}}
+async function cloudPushNow(){if(!SB||!CLOUD.user)return;const {error}=await SB.from(TBL).upsert({user_id:CLOUD.user.id,json:JSON.stringify(stripPhotos(S)),at:S.at,dev:DEVID});cloudStatus(error?'Sync error: '+error.message:'Synced at '+hhm())}
 window.__cp=()=>{if(!CLOUD.user)return;clearTimeout(CLOUD.pushT);cloudStatus('Saving…');CLOUD.pushT=setTimeout(cloudPushNow,1500)};
-async function cloudAttach(){const ref=FB.db.collection('users').doc(CLOUD.user.uid);cloudStatus('Syncing…');
- try{const sn=await ref.get();if(sn.exists&&sn.data().at>S.at)applyRemote(sn.data());else await cloudPushNow()}catch(e){cloudStatus('Sync error: '+e.message)}
- CLOUD.unsub=ref.onSnapshot(sn=>{if(!sn.exists||sn.metadata.hasPendingWrites)return;const d=sn.data();if(d.dev!==DEVID&&d.at>S.at){applyRemote(d);toast('Synced from your other device')}cloudStatus('Synced at '+hhm())},e=>cloudStatus('Sync error: '+e.message))}
+async function cloudPull(){if(!SB||!CLOUD.user)return;const {data,error}=await SB.from(TBL).select('json,at,dev').eq('user_id',CLOUD.user.id).maybeSingle();
+ if(error){cloudStatus('Sync error: '+error.message);return}if(data&&+data.at>S.at){applyRemote(data);return true}if(!data||+data.at<S.at)await cloudPushNow();else cloudStatus('Synced at '+hhm())}
+async function cloudAttach(){cloudStatus('Syncing…');await cloudPull();
+ CLOUD.ch=SB.channel('sweat-'+CLOUD.user.id).on('postgres_changes',{event:'*',schema:'public',table:TBL,filter:'user_id=eq.'+CLOUD.user.id},p=>{const d=p.new;if(d&&d.dev!==DEVID&&+d.at>S.at){applyRemote(d);toast('Synced from your other device');cloudStatus('Synced at '+hhm())}}).subscribe()}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&CLOUD.user)cloudPull().then(n=>{if(n)toast('Synced from your other device')})});
 function authSheet(mode){const b=openSheet(`<div class="shd"><h3>${mode==='up'?'Create your SWEAT account':'Sign in to SWEAT'}</h3>${closeBtn}</div>
   <p class="meta" style="margin-top:0">${mode==='up'?'Your plan, workouts, food log and check-ins sync between your phone and PC.':'Use the same account on every device to keep your data in sync.'}</p>
   <div style="display:flex;flex-direction:column;gap:12px;max-width:420px"><label class="f">Email<input type="text" id="auE" inputmode="email" autocomplete="email"></label><label class="f">Password<input type="password" id="auP" autocomplete="${mode==='up'?'new-password':'current-password'}" style="min-height:44px;border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--bg);font-size:16px"></label>
   <button class="btn pri" id="auGo">${mode==='up'?'Create account':'Sign in'}</button><button class="btn" id="auG">Continue with Google</button>
   <button class="btn sm" id="auSw" style="align-self:flex-start">${mode==='up'?'I already have an account':'Create a new account'}</button>${mode==='in'?'<button class="btn sm" id="auF" style="align-self:flex-start">Forgot password</button>':''}<div class="meta" id="auM"></div></div>`,'Account');
- const msg=t=>$('#auM',b).textContent=t,err=e=>msg((e&&e.code||'').replace('auth/','').replace(/-/g,' ')||'Something went wrong');
+ const msg=t=>$('#auM',b).textContent=t,err=e=>msg((e&&e.message)||'Something went wrong');
  $('#auSw',b).onclick=()=>authSheet(mode==='up'?'in':'up');
  $('#auGo',b).onclick=async()=>{const e=$('#auE',b).value.trim(),p=$('#auP',b).value;if(!e||p.length<6){msg('Enter your email and a password of at least 6 characters.');return}msg('Connecting…');
-  if(!await cloudInit()){msg('Could not reach the sync service.');return}try{mode==='up'?await FB.auth.createUserWithEmailAndPassword(e,p):await FB.auth.signInWithEmailAndPassword(e,p);closeSheet();toast(mode==='up'?'Account created. Your data now syncs.':'Signed in. Syncing your data.');if(!S.profile)setTimeout(()=>{if(!S.profile&&$('#sheet').hidden)onboard(0)},1500)}catch(x){err(x)}};
- $('#auG',b).onclick=async()=>{msg('Opening Google…');if(!await cloudInit()){msg('Could not reach the sync service.');return}try{await FB.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());closeSheet();toast('Signed in. Syncing your data.');if(!S.profile)setTimeout(()=>{if(!S.profile&&$('#sheet').hidden)onboard(0)},1500)}catch(x){err(x)}};
- const fp=$('#auF',b);if(fp)fp.onclick=async()=>{const e=$('#auE',b).value.trim();if(!e){msg('Type your email first.');return}if(!await cloudInit())return;try{await FB.auth.sendPasswordResetEmail(e);msg('Password reset email sent.')}catch(x){err(x)}}}
-function renderAcct(){const h=$('#acBox');if(!h)return;if(!cloudOn()){h.innerHTML='<p class="meta" style="margin:0">Accounts and phone–PC sync switch on once the free Firebase setup in the README is done.</p>';return}
+  if(!await cloudInit()){msg('Could not reach the sync service.');return}try{let r;if(mode==='up'){r=await SB.auth.signUp({email:e,password:p,options:{emailRedirectTo:location.origin+location.pathname}});if(r.error)throw r.error;if(!r.data.session){msg('Account created. Check your email and tap the confirmation link, then sign in here.');return}}else{r=await SB.auth.signInWithPassword({email:e,password:p});if(r.error)throw r.error}closeSheet();toast(mode==='up'?'Account created. Your data now syncs.':'Signed in. Syncing your data.');if(!S.profile)setTimeout(()=>{if(!S.profile&&$('#sheet').hidden)onboard(0)},1500)}catch(x){err(x)}};
+ $('#auG',b).onclick=async()=>{msg('Opening Google…');if(!await cloudInit()){msg('Could not reach the sync service.');return}const r=await SB.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname}});if(r.error)err(r.error)};
+ const fp=$('#auF',b);if(fp)fp.onclick=async()=>{const e=$('#auE',b).value.trim();if(!e){msg('Type your email first.');return}if(!await cloudInit())return;const r=await SB.auth.resetPasswordForEmail(e,{redirectTo:location.origin+location.pathname});r.error?err(r.error):msg('Password reset email sent.')}}
+function renderAcct(){const h=$('#acBox');if(!h)return;if(!cloudOn()){h.innerHTML='<p class="meta" style="margin:0">Accounts and phone–PC sync switch on once the free Supabase setup in the README is done.</p>';return}
  h.innerHTML=CLOUD.user?`<p style="margin:0">Signed in as <b>${esc(CLOUD.user.email||'Google account')}</b></p><p class="meta" style="margin:4px 0 10px" id="acSt">${esc(CLOUD.status)}</p><div class="row"><button class="btn sm" id="acSync">Sync now</button><button class="btn sm" id="acOut">Sign out</button></div>`
   :`<p class="meta" style="margin:0 0 10px">Create an account to keep your phone and PC in sync.</p><div class="row"><button class="btn pri sm" id="acUp">Create account</button><button class="btn sm" id="acIn">Sign in</button></div>`;
- const q=id=>$('#'+id,h);if(q('acUp'))q('acUp').onclick=()=>authSheet('up');if(q('acIn'))q('acIn').onclick=()=>authSheet('in');if(q('acSync'))q('acSync').onclick=()=>cloudPushNow();if(q('acOut'))q('acOut').onclick=async()=>{await FB.auth.signOut();toast('Signed out. Your data stays on this device.');renderAcct()}}
+ const q=id=>$('#'+id,h);if(q('acUp'))q('acUp').onclick=()=>authSheet('up');if(q('acIn'))q('acIn').onclick=()=>authSheet('in');if(q('acSync'))q('acSync').onclick=()=>cloudPushNow();if(q('acOut'))q('acOut').onclick=async()=>{await SB.auth.signOut();CLOUD.user=null;topBtns();toast('Signed out. Your data stays on this device.');renderAcct()}}
 if(cloudOn())cloudInit();
-
 /* ================= workout report ================= */
 const grade=sc=>sc>=85?'Excellent':sc>=70?'Strong':sc>=55?'Good':'Keep building';
 function recoveryHrs(h){const g={};(h.log||[]).forEach(l=>{const e=exById(l.ex);g[e.g]=(g[e.g]||0)+1});const H={Legs:48,Push:48,Pull:48,'Full body':48,Core:24,Cardio:24,Mobility:0};
@@ -1708,7 +1712,20 @@ window.addEventListener('hashchange',()=>{route();window.scrollTo(0,0)});
 function renderAll(){$('#meBtn').textContent=(S.profile&&S.profile.name?S.profile.name[0]:'S').toUpperCase();renderToday();renderPlan();renderLibrary();renderProgress();renderFood();renderTemplates();if(location.hash==='#body')renderBody()}
 renderAll();route();
 if(!S.profile)onboard();
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();window.__bip=e});
+const isApp=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone,onClaude=/claude|anthropic/.test(location.hostname)||!!window.claude;
+function topBtns(){const it=$('#instTop'),at=$('#acTop');it.hidden=isApp()||onClaude||location.protocol==='file:';it.classList.toggle('pri',!!window.__bip);
+ at.hidden=onClaude;if(!at.hidden){const u=CLOUD.user;$('#acTopT').textContent=u?'Synced':'Sign in';at.title=u?'Signed in as '+(u.email||'Google account'):'Sign in or create an account'}}
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();window.__bip=e;topBtns()});
+window.addEventListener('appinstalled',()=>{window.__bip=null;toast('SWEAT is installed. Open it from your apps.');topBtns()});
+$('#instTop').onclick=async()=>{if(window.__bip){try{window.__bip.prompt();const c=await window.__bip.userChoice;if(c&&c.outcome==='accepted')window.__bip=null}catch(e){}topBtns();return}
+ const ua=navigator.userAgent,ios=/iphone|ipad/i.test(ua),and=/android/i.test(ua),brave=!!navigator.brave;
+ openSheet(`<div class="shd"><h3>Install SWEAT</h3>${closeBtn}</div><p class="meta" style="margin-top:0">SWEAT installs as an app: its own window and icon, full screen, works offline.</p>
+ <ol style="line-height:1.7;padding-left:20px;margin:0">${ios?'<li>Open this page in <b>Safari</b>.</li><li>Tap <b>Share</b> (square with an arrow).</li><li>Tap <b>Add to Home Screen</b>, then <b>Add</b>.</li>'
+ :and?'<li>Tap the browser menu <b>⋮</b>.</li><li>Tap <b>Install app</b> or <b>Add to Home screen</b>.</li>'
+ :`<li>Look for the <b>install icon</b> (a screen with a down arrow) at the right end of the address bar and click it.</li><li>Or open the menu <b>${brave?'≡':'⋮'}</b> → <b>Cast, save and share</b> → <b>Install page as app…</b></li><li>Click <b>Install</b>. SWEAT then opens in its own window and appears in your Start menu / Applications.</li>`}</ol>
+ <p class="meta">If install doesn't appear, reload the page once. Installing needs the https://btb993.github.io/sweat address.</p>`,'Install')};
+$('#acTop').onclick=()=>{if(CLOUD.user){$('#meBtn').click();return}if(cloudOn())authSheet('in');else openSheet(`<div class="shd"><h3>Accounts</h3>${closeBtn}</div><p>Accounts are almost ready. They switch on once the free sync service is connected (see README: "Turn on accounts and sync").</p><p class="meta">Until then your data is saved on this device. Use Profile → Backup to move it between devices.</p>`,'Accounts')};
+topBtns();
 try{if('serviceWorker'in navigator&&location.protocol==='https:'&&!/claude|anthropic/.test(location.hostname))navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
 }
 </script>
