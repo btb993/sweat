@@ -12,6 +12,7 @@ Your personal training app: plans built for your goal, follow-along workout vide
 - **Muscle filter**: tap muscles on a body map to find exercises that train them.
 - **Daily check-in**: sleep, energy, soreness, stress and resting heart rate give a readiness score, and the day's session switches to a light version when you need it.
 - **Body and health**: charts for readiness, weight, sleep and resting heart rate, a muscle recovery map, and calorie, protein and water targets.
+- **Food tracker**: log meals from a built-in food list, the Open Food Facts database or a barcode scan. See calories, protein, carbs, fat and fibre, plus 13 vitamins and minerals as a % of your daily needs, with tips for what you're low on and a water tracker.
 - **Progress**: sets per week by muscle group, personal records, and session details with a set-by-set log.
 - **Garmin**: import `.fit`, `.tcx`, `.gpx` or Garmin Connect `.csv` exports to add heart rate and calories to your sessions.
 - **Installable and offline**: add it to your home screen and it works without a connection.
