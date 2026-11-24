@@ -313,7 +313,7 @@ video{width:100%;border-radius:14px;background:#000;max-height:360px}
 .wtwo{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}@media(min-width:860px){.wtwo{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}}
 .coach{display:flex;flex-direction:column;gap:10px}.coach .ci{background:var(--card);border-radius:14px;padding:12px 14px;border-left:4px solid var(--lime)}.coach .ci.y{border-color:var(--yel)}.coach .ci.r{border-color:var(--red)}.coach .ci b{display:block;margin-bottom:2px}
 .msug{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr))}.msug .card{gap:6px}.msug .tags{display:flex;flex-wrap:wrap;gap:6px}.msug .tags span{font-size:12px;background:rgba(214,251,65,.12);color:var(--lime);border-radius:999px;padding:3px 9px}
-.atype{display:flex;flex-wrap:wrap;gap:8px}.cotwo{display:grid;grid-template-columns:1fr 1fr;gap:8px}.costage{height:220px;border-radius:18px;overflow:hidden;position:relative;margin-bottom:10px}.coprs{display:flex;flex-wrap:wrap;gap:8px}.coprs .chip b{color:var(--lime);margin-right:2px}#laW{width:100%;min-width:0}#v-workout{padding-bottom:110px}
+.atype{display:flex;flex-wrap:wrap;gap:8px}.rvs{display:flex;align-items:center;gap:14px;background:var(--card);border-radius:16px;padding:12px 16px}.rvs b{font:800 40px 'Barlow Condensed',sans-serif;color:var(--lime)}.rvl{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;line-height:1.45}.rvl li::marker{color:#ffc23d}.rvl.ok li::marker{color:var(--lime)}.cotwo{display:grid;grid-template-columns:1fr 1fr;gap:8px}.costage{height:220px;border-radius:18px;overflow:hidden;position:relative;margin-bottom:10px}.coprs{display:flex;flex-wrap:wrap;gap:8px}.coprs .chip b{color:var(--lime);margin-right:2px}#laW{width:100%;min-width:0}#v-workout{padding-bottom:110px}
 @media(max-width:720px){.hero{padding:12px 16px 16px}.hero>div{gap:12px}.hello{font-size:14px}.hero h2{font-size:30px;margin:0}
  .ready{gap:14px;margin-top:8px}.ready .ring{width:84px!important;height:84px!important;flex:none}.ready .ring svg{width:84px;height:84px}.ready .ring b,.ready .ring .v b{font-size:30px!important}.ready .ring small{font-size:10px!important}.ready h3{font-size:19px!important}.ready p{font-size:14px;line-height:1.35}
  .tsess{grid-template-columns:104px minmax(0,1fr)!important;border-radius:18px}.tsess .stage{min-height:0!important;height:100%}.tsess .tmap{display:none}.tsess .bd{padding:12px 14px;gap:4px}.tsess .bd h3{font-size:20px!important}.tsess .bd>p{font-size:14px;line-height:1.35}.tsess .exl{display:none}.tsess .btn{min-height:38px;padding:0 14px;font-size:14px}}
@@ -740,9 +740,7 @@ function bodyPaths(J){const{H,S,Hd,d,fr}=J,mid=mix(H,S,.5),Sx=add(S,d,-2.5),T=wi
    if(CO.hs==='curly'){const W=[[-10.6,3],[-9,8],[-5,12],[0,13.6],[5,13.8],[9.4,11.6]];W.forEach(([u,w],i)=>{o.hair+=circ(Q(u,w),2.1+(i%2)*.5)})}}o.qf='';
   o.brd=smooth([[-1.6,-2.4],[1.2,-4.2],[4.4,-5.6],[6.2,-6],[7.6,-6.4],[8.9,-6.4],[9.1,-8.3],[7.2,-10.4],[3.6,-10.6],[.2,-9],[-2.2,-6.2]].map(([u,w])=>Q(u,w)));
   o.mst=smooth([[9.3,-3.3],[9.2,-4.5],[7.8,-4.9],[6.3,-4.8],[6.6,-3.9],[8,-3.4]].map(([u,w])=>Q(u,w)));
-  if(CO.bs==='short')o.brd=smooth([[-1.2,-3],[1.4,-4.6],[4.4,-5.8],[6.4,-6.1],[7.8,-6.5],[8.8,-6.5],[8.8,-7.9],[7,-9.6],[3.6,-10],[.4,-8.6],[-1.6,-6]].map(([u,w])=>Q(u,w)));
-  else if(CO.bs==='goatee'){o.brd=smooth([[5,-6.2],[7.6,-6.5],[8.9,-6.5],[8.9,-8.4],[7.4,-10.3],[5.2,-10.2],[4.6,-8]].map(([u,w])=>Q(u,w)))}
-  else if(CO.bs==='none'){o.brd='';o.mst=''}
+
   {const P2=(c,a,l)=>{const e=add(c,a,l);return`M${f1(c[0])},${f1(c[1])}L${f1(e[0])},${f1(e[1])}`},dn=[-d[0],-d[1]];let ch='';
    if(!shirt){for(let i=0;i<9;i++){const f=.48+(i%3)*.09,c=add(mix(mid,Sx,f),fr,10.6-(i%3)*1.2-(i>5?1:0));ch+=P2(add(c,d,(i>2?-2:0)),[dn[0]*.6+fr[0]*.3,dn[1]*.6+fr[1]*.3],2.2)}for(let i=0;i<5;i++){const c=add(mix(H,mid,.25+i*.15),fr,8.2);ch+=P2(c,dn,1.6)}}o.chh=ch;
    let ah='';for(let i=0;i<6;i++){const c=mix(J.A[0],J.A[1],.25+i*.1),ax2=v(J.A[0],J.A[1]),al=Math.hypot(...ax2)||1,nn=[-ax2[1]/al,ax2[0]/al];ah+=P2(add(c,nn,-(3.2-i*.15)),[ax2[0]/al*.7-nn[0]*.4,ax2[1]/al*.7-nn[1]*.4],1.6)}o.arh=ah}
@@ -758,13 +756,21 @@ function bodyPaths(J){const{H,S,Hd,d,fr}=J,mid=mix(H,S,.5),Sx=add(S,d,-2.5),T=wi
     rugged:{p:[[-9.4,-.5],[-8.6,5.4],[-3,10.2],[3.6,9.6],[7.2,7],[9.3,4.1],[8.4,2.1],[10,-.8],[10.5,-2.4],[9.7,-3.4],[9.4,-4.9],[8.8,-5.7],[9.2,-6.6],[9.1,-9],[7.6,-10.7],[2.6,-10.8],[-1.4,-9],[-4,-6.2],[-7.6,-4.2]],brow:[3.2,3,6.2,3.8,9.2,3.2,1.9],eye:[0,-.4,.85],nost:1.4,mouth:[[9,-5.7],[7.7,-6],[6.2,-5.7]]},
     model:{p:[[-9.4,-.5],[-8.6,5.4],[-3,10.4],[3.6,9.8],[7.5,7.2],[8.6,4.4],[8.3,2.4],[10.3,-1.4],[10.5,-2.4],[9.1,-2.9],[9.5,-4.3],[8.6,-5.2],[9.4,-6.2],[8.9,-8.5],[7.8,-10],[3.2,-9.8],[-.6,-7.9],[-3.6,-5.7],[-7.6,-4.2]],brow:[3.5,3.4,6.1,5.2,8.6,4.1,1.5],eye:[.1,.1,1],nost:.9,lips:1,mouth:[[9,-5.3],[7.8,-5.5],[6.3,-5.2]]}};
    FC.classic={brow:[3.5,3.3,6,4.9,8.4,3.9,1.5],eye:[0,0,1],nost:1,mouth:[[8.7,-5.3],[7.6,-5.9],[6.4,-5.2]]};
-   const fc=FC[CO.fc||'classic'];if(fc){if(fc.p)o.t3=smooth(fc.p.map(([u,w])=>Q(u,w)));
+   const fc=FC[CO.fc||'classic'];o._fp=(fc&&fc.p)||null;if(fc){if(fc.p)o.t3=smooth(fc.p.map(([u,w])=>Q(u,w)));
     const[b0,w0,bm,wm,b1,w1,th]=fc.brow;o.brow=`M${pt(Q(b0,w0))}Q${pt(Q(bm,wm+th))} ${pt(Q(b1,w1))}Q${pt(Q(bm,wm-th*.4))} ${pt(Q(b0,w0))}Z`;
     const[du,dw,k]=fc.eye,E=(u,w)=>Q(6.3+(u-6.3)*k+du,1.9+(w-1.9)*k+dw);
     o.eyeW=`M${pt(E(4.8,1.6))}Q${pt(E(6.3,3.3))} ${pt(E(7.9,1.9))}Q${pt(E(6.4,.6))} ${pt(E(4.8,1.6))}Z`;o.eyeI=circ(E(7,1.8),.95*k)+`M${pt(E(4.5,1.8))}Q${pt(E(6.3,3.7))} ${pt(E(8.2,2.1))}Q${pt(E(6.3,3.1))} ${pt(E(4.5,1.8))}Z`;
     const tip=(fc.p||[[10.6,-2.4]]).reduce((a,b)=>b[0]>a[0]&&b[1]<1&&b[1]>-3.5?b:a,[0,0]),n=fc.nost;o.nose=`M${pt(Q(tip[0]-.9,tip[1]-.6))}q${f1(-fr[0]*.8*n)},${f1(-fr[1]*.8*n)} ${f1((-fr[0]*1.4+d[0]*.3)*n)},${f1((-fr[1]*1.4+d[1]*.3)*n)}`;
     const[m0,m1,m2]=fc.mouth;o.mouth=`M${pt(Q(...m0))}Q${pt(Q(...m1))} ${pt(Q(...m2))}`+(fc.lips?`M${pt(Q(9.3,-6.1))}Q${pt(Q(8.4,-6.6))} ${pt(Q(7.4,-6.3))}`:'');
     o.cheek=fc.cheek?`M${pt(Q(...fc.cheek[0]))}Q${pt(mix(Q(...fc.cheek[0]),Q(...fc.cheek[1]),.5))} ${pt(Q(...fc.cheek[1]))}`:''}}
+   {const PF=o._fp||FACE,bs=CO.bs||'full';let mi=-1,mu=99;PF.forEach(([u,w],i)=>{if(u>5&&w<-4.6&&w>-6.2&&u<mu){mu=u;mi=i}});
+    if(mi>0&&bs!=='none'){const M=PF[mi],UL=PF[mi-1],ch=[];let j=mi+1;for(;j<PF.length&&PF[j][0]>-2.6;j++)ch.push(PF[j]);
+     const ctr=[2,-3],off=bs==='full'||bs==='stubble'?.95:bs==='short'?.45:.6,out=([u,w],k=off)=>{const du=u-ctr[0],dw=w-ctr[1],l=Math.hypot(du,dw)||1;return[u+du/l*k,w+dw/l*k]};
+     let poly;if(bs==='goatee'){const c2=ch.filter(([u])=>u>3.2);poly=[...c2.map(x=>out(x)),[3.8,-8.2],[5,-6.9],[M[0]-.7,M[1]-.9],[M[0]-.1,M[1]-.7]]}
+     else{const cheek=bs==='short'?[[0,-2.8],[3,-4.6]]:[[-.2,-.6],[3,-2.9]];poly=[...ch.map(x=>out(x)),[-2.2,-4],[-2,.2],[-1.2,2],[-.2,1.6],...cheek,[M[0]-2.6,M[1]+.1],[M[0]-.7,M[1]-.9],[M[0]-.1,M[1]-.75]]}
+     o.brd=smooth(poly.map(([u,w])=>Q(u,w)));
+     o.mst=bs==='goatee'||bs==='full'||bs==='short'||bs==='stubble'?smooth([[UL[0]+.15,UL[1]+.6],[UL[0]+.05,UL[1]-.35],[UL[0]-1.4,UL[1]-.8],[UL[0]-3.1,UL[1]-.5],[UL[0]-2.6,UL[1]+.45],[UL[0]-1.2,UL[1]+.75]].map(([u,w])=>Q(u,w))):''}
+    else{o.brd='';o.mst=''}}
   const tl=v(H,J.L[0]),tn=Math.hypot(...tl)||1,tp=[-tl[1]/tn,tl[0]/tn];o.dL=lp(add(mix(H,J.L[0],.3),tp,-3),add(mix(H,J.L[0],.9),tp,-2.5));
   if(!shirt){const at=f=>{const c=mix(mid,Sx,f),r=7.9+(12.6-7.9)*f;return[add(c,fr,r+.6),add(c,fr,r-4)]},ab=f=>{const c=mix(H,mid,f);return[add(c,fr,8.6),add(c,fr,4.6)]};
    const pa=add(add(Sx,fr,12.4),d,-9),pb=add(add(Sx,fr,3),d,-11.5),pc=add(add(Sx,fr,9),d,-13.5);
@@ -1611,6 +1617,7 @@ const FDB=[
 ['beer','Beer','Snacks & drinks','1 pint',500,43,.5,3.6,0,0,0,0,4,27,4,.02,6,.01,0,0,0,0,0,.02,6,.05],
 ['wine','Red wine','Snacks & drinks','1 glass',150,85,.1,2.6,0,0,.6,0,4,127,8,.46,12,.14,0,0,0,0,0,0,1,.06]
 ,['frchick','Fried chicken, breaded','Protein','1 piece',130,260,23,9,15,.4,.2,4,520,230,25,1.2,23,1.8,30,0,.2,1.2,15,.3,15,.35]
+,['pokeebi','Poke ebi mango (shrimp poke bowl, Momo)','Protein','1 bowl',470,145,7,20,3.9,1.3,5,.6,260,200,25,.7,22,.6,30,8,0,1,10,.3,35,.1]
 ,['ragu','Ragu soup (ragu čorba)','Protein','1 bowl',350,75,5,5,4,.8,1.2,1.5,380,180,15,.7,10,1,120,3,0,.3,3,.4,10,.1]
 ,['cevapi','Ćevapi, grilled','Protein','5 pieces',150,260,18,2,20,0,.5,8,700,280,20,2.2,20,4,0,0,.1,.3,1.5,2,8,.3]
 ,['frcheese','Fried cheese, breaded','Dairy','1 portion',150,330,16,14,23,.6,1,11,650,90,450,.9,25,2.2,180,0,.4,.8,3,.9,20,.08]
@@ -1886,6 +1893,8 @@ const MSUG=[
  ['Sardines on toast & orange',[['sard',90],['wbread',64],['orange',130],['tom',80]]],
  ['Tofu stir-fry with rice',[['tofu',150],['rice',150],['broc',120],['pepper',80],['oil',10]]],
  ['Kiwi, almonds & dark chocolate',[['kiwi',150],['almond',25],['choc',15]]]];
+const SLOTS={breakfast:['Greek yogurt bowl','Skyr, banana & almonds','Veggie omelette & toast','Cottage cheese & strawberries','Shake with oats & banana'],lunch:['Chicken, rice & broccoli','Tuna & chickpea salad','Bean & rice bowl','Lentils with carrot & bread','Poke ebi mango bowl','Sardines on toast & orange'],pre:['Banana & peanut butter','Rice cakes with honey','Kiwi, almonds & dark chocolate'],dinner:['Salmon, potato & spinach','Steak, sweet potato & salad','Tofu stir-fry with rice','Ćevapi with salad (lighter plate)','Chicken, rice & broccoli']};
+MSUG.push(['Poke ebi mango bowl',[['pokeebi',470]]],['Banana & peanut butter',[['banana',118],['pb',16]]],['Rice cakes with honey',[['ricec',27],['honey',14],['yog2',100]]]);
 const MKEY=['p','fib','k','ca','fe','mg','zn','va','vc','vd','ve','vk','b12','fol','b6'];
 function mealNut(m){const t={};NK.forEach(k=>t[k]=0);m[1].forEach(([f,g])=>{const o=foodById(f);if(o)NK.forEach(k=>t[k]+=(o[k]||0)*g/100)});return t}
 function weekAvg(){const ds=[...Array(7)].map((_,i)=>{const x=new Date();x.setDate(x.getDate()-i);return dkey(x)}).filter(k=>(FS().days[k]||{entries:[]}).entries.length);
@@ -1906,9 +1915,9 @@ function dayBlock(D,x){if(!D)return;const{hs,as,T,t,now,wMin,aMin,burn,tgt,mus,m
   <div class="dstat"><div><b>${hs.length+as.length}</b><small>workouts & activities</small></div><div><b>${Math.round(wMin+aMin)} min</b><small>active</small></div><div><b>${burn}</b><small>kcal burned</small></div><div><b>${Math.round(t.kcal)}</b><small>kcal eaten of ${tgt}</small></div><div><b>${Math.round(t.p)} g</b><small>protein of ${T.p} g</small></div>${kmT?`<div><b>${r0(kmT)} km</b><small>distance</small></div>`:''}</div>
   <div class="wtwo"><div>${hs.length||as.length?`<ul class="dlist">${hs.map(h=>{const r=h.report||{},bk=h.bike||{};return`<li>${bk.photo?`<img src="${bk.photo}" alt="">`:''}<span><b>${esc(h.name)}</b><small>${[TM(h.start),Math.round(h.dur/60)+' min'+(r.active?' ('+Math.round(r.active/60)+' active, '+Math.round((r.rest||0)/60)+' rest)':''),r.kcal?r.kcal+' kcal':'',h.sets+' sets',h.reps?h.reps+' reps':'',h.vol?Math.round(h.vol)+' '+S.units+' lifted':'',r.score!=null?'efficiency '+r.score+'%':'',h.rpe?'effort '+h.rpe+'/10':'',bk.km?'bike '+r0(bk.km)+' km':'',bk.rpm?bk.rpm+' rpm':''].filter(Boolean).join(' · ')}</small></span><button class="btn sm" data-hs="${h.id}">Report</button></li>`}).join('')}${as.map(a=>`<li>${a.photo?`<img src="${a.photo}" alt="">`:''}<span><b>${esc(a.sport)}${a.name?' · '+esc(a.name):''}</b><small>${[TM(a.start),Math.round(a.dur/60)+' min',a.dist?r0(a.dist)+' km':'',a.dist&&a.dur?r0(a.dist/(a.dur/3600))+' km/h':'',a.cal?Math.round(a.cal)+' kcal'+(a.calEst?' (est.)':''):'',a.rpm?a.rpm+' rpm':'',a.avg?a.avg+' bpm avg':'',a.max?a.max+' max':'',a.lvl?'level '+a.lvl:'',a.src&&a.src!=='Manual'?'from '+a.src:''].filter(Boolean).join(' · ')}</small></span><button class="btn sm" data-ae="${a.id}">Edit</button></li>`).join('')}</ul>`
   :'<div class="empty">Nothing logged yet today. Pick a workout above, or log a ride or walk with <b>Log activity</b>.</div>'}
-  <div class="row" style="margin-top:12px"><button class="btn sm" data-wl2>+ Log activity</button><button class="btn sm" data-wbk>+ Indoor bike ride</button><a class="btn sm" href="#food">Food log</a></div></div>
+  <div class="row" style="margin-top:12px"><button class="btn sm" data-wl2>+ Log activity</button><button class="btn sm" data-wbk>+ Indoor bike ride</button><a class="btn sm" href="#food">Food log</a><button class="btn sm pri" data-rvw>Review day & plan tomorrow</button></div></div>
   <div>${Object.keys(mus).length?`<div class="meta" style="margin-bottom:6px">Muscles worked today</div>${scoreMap(withP(mus,mp),230)}`:''}</div></div>`;
- $('[data-wl2]',D).onclick=()=>logActivity();$('[data-wbk]',D).onclick=()=>logActivity({sport:'Indoor bike'});
+ $('[data-wl2]',D).onclick=()=>logActivity();$('[data-rvw]',D).onclick=()=>reviewSheet(new Date().getHours()<10?(()=>{const y=new Date();y.setDate(y.getDate()-1);return dkey(y)})():TODAY());$('[data-wbk]',D).onclick=()=>logActivity({sport:'Indoor bike'});
  $$('[data-hs]',D).forEach(b=>b.onclick=()=>{const h=S.history.find(x=>x.id===b.dataset.hs);if(h)showSession(h)});
  $$('[data-ae]',D).forEach(b=>b.onclick=()=>{const a=S.acts.find(x=>x.id===b.dataset.ae);if(a)logActivity(a)});}
 function renderWork(){renderPick();const D=$('#wDay'),Co=$('#wCoach');if(!D)return;const x=dayStats(),{td,hs,as,T,t,fd,now,hr,wMin,aMin,wK,aK,burn,tgt,left,mus,mp,kmT}=x;dayBlock(D,x);
@@ -1943,6 +1952,49 @@ function renderCoach(){const h=$('#coBox');if(!h)return;const c=coachOf();
  const f=makeFig($('#coFig',h),exById('curl'),{coach:c,ambient:true,muscles:false});f.vis=true;const g=makeFig($('#coFace',h),exById('curl'),{coach:c,ambient:false,muscles:false});g.manual=true;drawFig(g,.2);{const sv=g.svg,bb=sv.querySelector('.p-t3').getBBox(),cx=bb.x+bb.width/2+.5,cy=bb.y+bb.height/2-.5,w=38;sv.setAttribute('viewBox',`${cx-w*.5} ${cy-w*.55} ${w} ${w*1.1}`);sv.setAttribute('preserveAspectRatio','xMidYMid meet')}
  $$('[data-cop]',h).forEach(b=>b.onclick=()=>{S.coach={...COPRE.find(x=>x[0]===b.dataset.cop)[2]};save();renderCoach();renderAll()});
  $$('[data-cog]',h).forEach(b=>b.onclick=()=>{const g=b.dataset.cog;S.coach={...coachOf(),[g]:g==='bulk'?+b.dataset.v:b.dataset.v};save();renderCoach();renderAll()})}
+
+/* ================= day review & tomorrow ================= */
+function reviewDay(dk){const T=ftargets(),t=totals(dk),fd=fday(dk),hs=S.history.filter(h=>dkey(h.start)===dk),as=S.acts.filter(a=>dkey(a.start)===dk),D=new Date(dk+'T12:00');
+ const pd=S.plan&&S.plan.days.find(x=>x.dow===DOW(D)),burnA=as.reduce((s,a)=>s+(a.cal||0),0),burnW=hs.reduce((s,h)=>s+(h.report&&h.report.kcal||0),0),tgt=Math.round(T.kcal+burnA*.6),logged=fd.entries.length;
+ const min=Math.round((hs.reduce((s,h)=>s+(h.report&&h.report.active?h.report.active:h.dur||0),0)+as.reduce((s,a)=>s+(a.dur||0),0))/60);
+ const good=[],fix=[],pc=k=>T[k]?t[k]/T[k]:1,MIC=['fib','k','ca','fe','mg','zn','va','vc','vd','ve','vk','b12','fol','b6'];
+ // training
+ if(hs.length||as.length){good.push(`You trained: ${[...hs.map(h=>h.name),...as.map(a=>a.sport+(a.dist?' '+r0(a.dist)+' km':''))].join(', ')} · ${min} active min, about ${Math.round(burnA+burnW)} kcal.`);
+  const eff=hs.filter(h=>h.report).map(h=>h.report.score);if(eff.length){const e=Math.round(eff.reduce((a,b)=>a+b,0)/eff.length);e>=80?good.push(`Workout efficiency ${e}%: you followed the plan and kept rests tight.`):fix.push(`Workout efficiency was ${e}%. Finish all sets and keep rests close to the timer.`)}}
+ else if(pd)fix.push(`${esc(pd.name)} was planned but nothing was logged.`);else good.push('Rest day, as planned. Recovery is part of training.');
+ // food
+ if(!logged)fix.push('No food was logged, so the nutrition review is empty. Log meals in the Food tab.');
+ else{const kc=t.kcal/tgt;
+  if(kc<.8)fix.push(`Calories were low: ${Math.round(t.kcal)} of ${tgt} kcal. ${hs.length||as.length?'Under-eating on a training day slows recovery.':'Make sure the rest of the week evens it out.'}`);
+  else if(kc>1.15)fix.push(`Calories were high: ${Math.round(t.kcal)} of ${tgt} kcal (+${Math.round(t.kcal-tgt)}).`);else good.push(`Calories on target: ${Math.round(t.kcal)} of ${tgt} kcal.`);
+  pc('p')>=.9?good.push(`Protein ${Math.round(t.p)} g of ${T.p} g: great for recovery and muscle.`):fix.push(`Protein ${Math.round(t.p)} g of ${T.p} g: about ${Math.round(T.p-t.p)} g short.`);
+  if(pc('fib')<.7)fix.push(`Fibre ${r0(t.fib)} g of ${T.fib} g: add vegetables, beans, fruit or oats.`);
+  ['na','sat','sug'].forEach(k=>{if(t[k]>T[k])fix.push(`${NUT[k][0]} over the limit: ${r0(t[k])} of ${T[k]} ${NUT[k][1]}.`)});
+  const okM=MIC.filter(k=>pc(k)>=.7),lowM=MIC.filter(k=>k!=='fib'&&pc(k)<.5).sort((a,b)=>pc(a)-pc(b));
+  if(okM.length>=10)good.push(`${okM.length} of ${MIC.length} vitamins and minerals at 70% or more.`);if(lowM.length)fix.push('Low: '+lowM.slice(0,5).map(k=>`${NUT[k][0]} ${Math.round(pc(k)*100)}%`).join(', ')+'.');
+  if(fd.water<T.water*1000*.7)fix.push(`Water ${(fd.water/1000).toFixed(1)} of ${T.water} L.`);else good.push(`Water ${(fd.water/1000).toFixed(1)} L.`)}
+ // score
+ const sc=Math.max(0,Math.min(100,Math.round(100*(good.length/(good.length+fix.length||1)))));
+ // tomorrow
+ const N=new Date(D);N.setDate(N.getDate()+1);const pn=S.plan&&S.plan.days.find(x=>x.dow===DOW(N)),train=!!pn,legs=pn&&/leg|lower|full/i.test(pn.name);
+ const kgx=kgOf(),tk=Math.round(T.kcal*(train?1.05:.95)),tp=Math.round(Math.max(T.p,kgx*1.8)),tc=Math.round(kgx*(train?(legs?4.5:4):3));
+ // need weights: what was low today + this week
+ const wk=weekAvg(),need={};MKEY.forEach(k=>{const a=T[k]?Math.min(1,t[k]/T[k]):1,b=wk.n>=2&&T[k]?Math.min(1,wk[k]/T[k]):a;need[k]=Math.max(0,1-(a*.6+b*.4))+(k==='p'?.6:0)});
+ const used=new Set(),pick=slot=>{const L=SLOTS[slot].map(n=>MSUG.find(m=>m[0]===n)).filter(m=>m&&!used.has(m[0]));let best=null,bs=-1;L.forEach(m=>{const n=mealNut(m);let v=0;MKEY.forEach(k=>{if(T[k])v+=Math.min(1,n[k]/T[k])*need[k]});if(slot==='pre')v+=n.c/60;if(n.na>900)v*=.85;if(v>bs){bs=v;best=m}});if(best)used.add(best[0]);return best};
+ const plan=[['Breakfast',pick('breakfast')],['Lunch',pick('lunch')],...(train?[['2 h before training',pick('pre')]]:[]),[train?'After training / dinner':'Dinner',pick('dinner')]];
+ const pt=plan.reduce((a,[,m])=>{const n=mealNut(m);a.k+=n.kcal;a.p+=n.p;a.c+=n.c;return a},{k:0,p:0,c:0});
+ return{dk,D,sc,good,fix,plan,pt,tk,tp,tc,pn,train,legs,N}}
+function reviewSheet(dk){const r=reviewDay(dk),dn=x=>x.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'});
+ const b=openSheet(`<div class="shd"><div><h3>Your day</h3><div class="meta">${esc(dn(r.D))}</div></div>${closeBtn}</div>
+  <div class="row" style="margin-bottom:12px"><button class="chip" data-rd="${TODAY()}" aria-pressed="${dk===TODAY()}">Today</button><button class="chip" data-rd="${(()=>{const y=new Date();y.setDate(y.getDate()-1);return dkey(y)})()}" aria-pressed="${dk!==TODAY()}">Yesterday</button></div>
+  <div class="rvs"><b>${r.sc}</b><span>${r.sc>=75?'Strong day':r.sc>=50?'Decent day, a few things to fix':'Room to improve'}</span></div>
+  ${r.good.length?`<h4 style="margin:16px 0 6px;color:var(--lime)">What went well</h4><ul class="rvl ok">${r.good.map(x=>`<li>${x}</li>`).join('')}</ul>`:''}
+  ${r.fix.length?`<h4 style="margin:16px 0 6px;color:#ffc23d">What to fix</h4><ul class="rvl">${r.fix.map(x=>`<li>${x}</li>`).join('')}</ul>`:''}
+  <h4 style="margin:20px 0 4px">Food plan for ${esc(dn(r.N).split(',')[0])}</h4>
+  <p class="meta" style="margin:0 0 10px">${r.train?`Training day: ${esc(r.pn.name)}${r.legs?' (legs, so more carbs)':''}.`:'Rest day: slightly fewer calories and carbs, protein stays high.'} Targets: about ${r.tk} kcal, ${r.tp} g protein, ${r.tc} g carbs. These meals fill what was low${r.fix.some(x=>x.startsWith('Low'))?' today':''} and this week.</p>
+  <div class="msug">${r.plan.map(([slot,m])=>{const n=mealNut(m);return`<div class="card"><div class="meta" style="font-size:12px;text-transform:uppercase;letter-spacing:.06em">${slot}</div><b>${esc(m[0])}</b><span class="meta">${Math.round(n.kcal)} kcal · ${Math.round(n.p)} g protein · ${Math.round(n.c)} g carbs</span></div>`}).join('')}</div>
+  <p class="meta" style="margin:10px 0 0">Together about ${Math.round(r.pt.k)} kcal and ${Math.round(r.pt.p)} g protein. Fill the rest with fruit, vegetables, water (${ftargets().water} L) and, if you need it, a snack like Greek yogurt or a shake.${r.train?' Eat the pre-training meal 1–2 h before, and protein within 2 h after.':''}</p>`,'Day review');
+ $$('[data-rd]',b).forEach(x=>x.onclick=()=>reviewSheet(x.dataset.rd))}
 window.__sweat={makeFig,exById,drawFig,state:()=>S};
 /* ================= loop & routing ================= */
 let last=performance.now();

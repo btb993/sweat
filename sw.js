@@ -1,5 +1,5 @@
 // SWEAT service worker: makes the app open offline.
-const CACHE = 'sweat-v7';
+const CACHE = 'sweat-v8';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/icon.svg'];
 
 self.addEventListener('install', e => {
