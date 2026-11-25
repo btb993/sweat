@@ -1947,6 +1947,8 @@ $('#fPrev').onclick=()=>{const x=new Date(fDay);x.setDate(x.getDate()-1);fDay=dk
 $('#fNext').onclick=()=>{const x=new Date(fDay);x.setDate(x.getDate()+1);fDay=dkey(x)>TODAY()?TODAY():dkey(x);renderFood()};
 $('#fMeals').addEventListener('click',e=>{const a=e.target.closest('[data-addm]');if(a){addFood(a.dataset.addm);return}const b=e.target.closest('[data-e]');if(b){const en=fday(fDay).entries.find(x=>x.id===b.dataset.e);if(en)amountSheet(foodById(en.f),en.meal,en)}});
 $('#fWater').addEventListener('click',e=>{const b=e.target.closest('[data-w]');if(!b)return;const d=fday(fDay),i=+b.dataset.w,full=Math.round(d.water/250);d.water=(i+1===full?i:i+1)*250;save();renderFood()});
+const fnorm=t=>t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'dj');
+const FSYN={lignje:['calamar','squid'],squid:['calamar'],calamar:['squid'],sir:['cheese'],hleb:['bread'],hljeb:['bread'],kruh:['bread'],jogurt:['yogurt'],jaj:['egg'],piletin:['chicken'],tunjevin:['tuna'],maslin:['olive'],losos:['salmon'],pirinac:['rice'],riza:['rice'],krompir:['potato'],krumpir:['potato'],jabuk:['apple'],banan:['banana'],mleko:['milk'],mlijeko:['milk'],kolac:['dessert','strudel','cake'],torta:['cake','dessert']};
 function addFood(meal){const F=FS();let cat='All';
  const b=openSheet(`<div class="shd"><h3>Add to ${esc(meal)}</h3>${closeBtn}</div>
   <input type="search" id="fq" placeholder="Search foods, e.g. chicken, oats, banana" aria-label="Search foods" style="width:100%">
@@ -1954,7 +1956,7 @@ function addFood(meal){const F=FS();let cat='All';
   <div class="pick" id="fres" style="max-height:46vh"></div>
   <div class="row" style="margin-top:12px"><button class="btn" id="fOn">Search online database</button><button class="btn" id="fBar">Barcode</button><button class="btn" id="fNew">Create a food</button></div><div class="meta" id="fMsg" style="margin-top:6px"></div>`,'Add food');
  const draw=(extra)=>{const q=$('#fq',b).value.trim().toLowerCase();let list=cat==='Recent'?F.recent.map(foodById).filter(Boolean):cat==='My foods'?F.custom:allFoods().filter(f=>(cat==='All'&&!f.hid)||f.cat===cat&&!f.hid);
-  if(q)list=list.filter(f=>(f.name+' '+(f.brand||'')).toLowerCase().includes(q));if(extra)list=[...extra,...list];
+  if(q){const W=fnorm(q).split(/\s+/).filter(Boolean).map(w=>w.replace(/(es|s)$/,''));list=list.filter(f=>{const h=fnorm(f.name+' '+(f.brand||'')+' '+(f.cat||''));return W.every(w=>h.includes(w)||(FSYN[w]||[]).some(y=>h.includes(y)))})}if(extra)list=[...extra,...list];
   $('#fres',b).innerHTML=list.length?list.slice(0,80).map(f=>`<button data-f="${esc(f.id)}"><span>${esc(f.name)}${f.brand?` <span class="meta">${esc(f.brand)}</span>`:''}<br><span class="meta">${esc(f.pn)} · ${Math.round(f.kcal*f.pg/100)} kcal · ${r0(f.p*f.pg/100)} g protein</span></span><b>+</b></button>`).join(''):'<p class="meta" style="padding:12px">No match here. Try the online database or create the food.</p>'};
  let online=[];draw();$('#fq',b).oninput=()=>draw(online);
  $$('#fcat .chip',b).forEach(c=>c.onclick=()=>{cat=c.dataset.c;$$('#fcat .chip',b).forEach(x=>x.setAttribute('aria-pressed',x===c));draw(online)});
